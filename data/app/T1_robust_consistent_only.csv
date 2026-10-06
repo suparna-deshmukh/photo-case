@@ -1,0 +1,6 @@
+gate,n,share_pct,ci_lo,ci_hi,denom_n
+expression,13,11.8,7.0,19.2,110
+interpretation,57,51.8,42.6,60.9,110
+evaluation,34,30.9,23.0,40.1,110
+refinement,3,2.7,0.9,7.7,110
+persistence,3,2.7,0.9,7.7,110

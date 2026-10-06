@@ -1,0 +1,9 @@
+type,spoken,said_sure,verified_correct,verified_wrong,forgotten,share_sure_pct,share_correct_pct,share_wrong_pct
+place,6,5,5,1,0,83.0,83.0,17.0
+person,4,2,1,2,0,50.0,25.0,50.0
+time_when,4,0,3,1,0,0.0,75.0,25.0
+visual_detail,4,4,2,2,0,100.0,50.0,50.0
+event_context,3,3,3,0,0,100.0,100.0,0.0
+anchor_relation,1,0,0,1,0,0.0,0.0,100.0
+emotion_or_vibe,1,0,0,0,0,0.0,0.0,0.0
+setting,1,1,1,0,0,100.0,100.0,0.0

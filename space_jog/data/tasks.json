@@ -1,0 +1,202 @@
+[
+  {
+    "id": "X1",
+    "set": "X",
+    "type": "T1_event_context",
+    "fragment_text": "I'm trying to find a photo of a small caf\u00e9 on our Goa trip. I think it was daytime and we were having coffee before the beach. I don't remember which day or which caf\u00e9.",
+    "target_img_id": "img_0086",
+    "anchor_img_id": null,
+    "decoy_img_ids": [
+      157,
+      182,
+      180,
+      156,
+      184,
+      170,
+      181,
+      183
+    ],
+    "difficulty_note": "Caf\u00e9 decoys are visually similar; day-level recall is the only discriminator.",
+    "counterbalance_pair": "Y1"
+  },
+  {
+    "id": "Y1",
+    "set": "Y",
+    "type": "T1_event_context",
+    "fragment_text": "There's a photo from the trip where we stopped at a caf\u00e9 by the river. It was during the day, I'm sure. I don't remember which day of the trip it was.",
+    "target_img_id": "img_0224",
+    "anchor_img_id": null,
+    "decoy_img_ids": [
+      58,
+      83,
+      59,
+      60,
+      84,
+      80,
+      85,
+      56
+    ],
+    "difficulty_note": "Multiple daytime caf\u00e9s across trips; anchor is the river, which is weakly stated.",
+    "counterbalance_pair": "X1"
+  },
+  {
+    "id": "X2",
+    "set": "X",
+    "type": "T2_utility",
+    "fragment_text": "When I was ill I photographed my medicine so I'd remember the dosage. I think it was around the end of 2023, maybe November. I don't remember where I took it.",
+    "target_img_id": "img_0195",
+    "anchor_img_id": null,
+    "decoy_img_ids": [
+      311,
+      309,
+      310,
+      272,
+      263,
+      262,
+      103,
+      306
+    ],
+    "difficulty_note": "Utility images are visually similar documents; the period is approximate.",
+    "counterbalance_pair": "Y2"
+  },
+  {
+    "id": "Y2",
+    "set": "Y",
+    "type": "T2_utility",
+    "fragment_text": "I had photographed my handwritten notes right before exams last year, around April or May. I can't remember the exact day or which page it was.",
+    "target_img_id": "img_0130",
+    "anchor_img_id": null,
+    "decoy_img_ids": [
+      275,
+      272,
+      309,
+      310,
+      263,
+      386,
+      311,
+      262
+    ],
+    "difficulty_note": "Notes images recur across events; month-level memory only.",
+    "counterbalance_pair": "X2"
+  },
+  {
+    "id": "X3",
+    "set": "X",
+    "type": "T3_anchor_relative",
+    "fragment_text": "In Pondicherry we had dinner on a rooftop at night, the evening after we walked around the old French-style buildings. I want that dinner photo.",
+    "target_img_id": "img_0231",
+    "anchor_img_id": "img_0212",
+    "decoy_img_ids": [
+      194,
+      90,
+      92,
+      89,
+      91,
+      94,
+      88,
+      93
+    ],
+    "difficulty_note": "Only an anchor-relative memory; the target night is 1-2 days after the anchor.",
+    "counterbalance_pair": "Y3"
+  },
+  {
+    "id": "Y3",
+    "set": "Y",
+    "type": "T3_anchor_relative",
+    "fragment_text": "In Bengaluru, near the end of my internship, a few days after a stretch of late nights at the office, we went out one evening and I saw the city from up high. I want that evening photo.",
+    "target_img_id": "img_0267",
+    "anchor_img_id": "img_0257",
+    "decoy_img_ids": [
+      209,
+      226,
+      213,
+      232,
+      229,
+      228,
+      212,
+      230
+    ],
+    "difficulty_note": "Week-level anchor; evening city-view shots recur.",
+    "counterbalance_pair": "X3"
+  },
+  {
+    "id": "X4",
+    "set": "X",
+    "type": "T4_near_duplicate",
+    "fragment_text": "A sunset photo with a boat in the foreground. It was either Goa or Gokarna. I'm sure about the boat.",
+    "target_img_id": "img_0295",
+    "anchor_img_id": null,
+    "decoy_img_ids": [
+      210,
+      94,
+      87,
+      93,
+      213,
+      209,
+      219,
+      212
+    ],
+    "difficulty_note": "Near-duplicate sunsets; the boat is the only reliable cue.",
+    "counterbalance_pair": "Y4"
+  },
+  {
+    "id": "Y4",
+    "set": "Y",
+    "type": "T4_near_duplicate",
+    "fragment_text": "A photo of the old stone ruins at sunset, and I think one of us was standing in front of them. It was the Hampi trip.",
+    "target_img_id": "img_0185",
+    "anchor_img_id": null,
+    "decoy_img_ids": [
+      128,
+      125,
+      122,
+      110,
+      131,
+      120,
+      251,
+      127
+    ],
+    "difficulty_note": "Ruins shots are similar; a person + golden hour must disambiguate.",
+    "counterbalance_pair": "X4"
+  },
+  {
+    "id": "P1",
+    "set": "practice",
+    "type": "practice",
+    "fragment_text": "A festival photo from home last year \u2014 sweets and lights. I don't remember which day.",
+    "target_img_id": "img_0064",
+    "anchor_img_id": null,
+    "decoy_img_ids": [
+      "img_0365",
+      "img_0366",
+      "img_0367",
+      "img_0368",
+      "img_0370",
+      "img_0372",
+      "img_0380",
+      "img_0381"
+    ],
+    "difficulty_note": "Practice: warm-up with an easy festive target.",
+    "counterbalance_pair": "P2"
+  },
+  {
+    "id": "P2",
+    "set": "practice",
+    "type": "practice",
+    "fragment_text": "A photo from a college fest night \u2014 stage lights and a crowd. I think it was last year.",
+    "target_img_id": "img_0345",
+    "anchor_img_id": null,
+    "decoy_img_ids": [
+      "img_0031",
+      "img_0034",
+      "img_0035",
+      "img_0041",
+      "img_0043",
+      "img_0044",
+      "img_0045",
+      "img_0046"
+    ],
+    "difficulty_note": "Practice: event-night warm-up.",
+    "counterbalance_pair": "P1"
+  }
+]

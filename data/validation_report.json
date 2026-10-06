@@ -1,0 +1,202 @@
+{
+  "n_test": 40,
+  "n_dev": 15,
+  "prompt_version": "v1",
+  "labeling_note": "Labels written by a second AI model (independent blind pass), per user instruction 2026-10-06. This is a second-model audit, NOT human validation; human validation deferred. Blind CSV kept valid for a later human pass.",
+  "fields": {
+    "is_retrieval": {
+      "accuracy_pct": 97.5,
+      "kappa": 0.931
+    },
+    "photo_type": {
+      "accuracy_pct": 100.0,
+      "kappa": 1.0
+    },
+    "failure_gate": {
+      "accuracy_pct": 67.5,
+      "kappa": 0.569
+    },
+    "outcome": {
+      "accuracy_pct": 80.0,
+      "kappa": 0.691
+    }
+  },
+  "failure_gate_confusion": {
+    "labels": [
+      "evaluation",
+      "expression",
+      "interpretation",
+      "not_search_related",
+      "persistence",
+      "refinement",
+      "unclear"
+    ],
+    "matrix": [
+      [
+        3,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        9,
+        1,
+        0,
+        2,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        2,
+        1,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        12
+      ]
+    ],
+    "note": "rows=human, cols=model"
+  },
+  "disagreements_test": [
+    {
+      "id": "1vt386b_p4xgl20",
+      "details": "failure_gate human=expression model=evaluation; outcome human=unknown model=not_found",
+      "snippet": "Well, I have a pixel 9 pro and it's got three files for every shot - a JPG, a burst video and a .json. The .json is easy to remove from the equation but the short videos are doing my head in because t"
+    },
+    {
+      "id": "13746457879",
+      "details": "failure_gate human=evaluation model=interpretation",
+      "snippet": "New Update. The new update ruined my favourite feature.. Image search! Not sure if it's A.I powered like everything else these days, but the search queries that once brought the exact results I was lo"
+    },
+    {
+      "id": "823fb45a-ebb4-4721-bb4d-7565ed12f99a",
+      "details": "failure_gate human=interpretation model=refinement",
+      "snippet": "The search has ruined 20 years of careful intentional activity. the most basic things cannot be found now. searches that would have narrowed down and put a result out. now take five or six clarificati"
+    },
+    {
+      "id": "11231541266",
+      "details": "failure_gate human=unclear model=expression; outcome human=unknown model=not_found",
+      "snippet": "At my age - not intuitive. Love the ability to snap & share, though still find myself falling short when trying to locate \"that snap\"."
+    },
+    {
+      "id": "37aa9ab3-cd5c-402a-99e1-bd592005552b",
+      "details": "failure_gate human=interpretation model=evaluation",
+      "snippet": "In the more section of the app, I can no longer send, print, email, etc. I have tried everything. Every time i download photos from google messages, it doesn't go in the same day I downloaded it. It d"
+    },
+    {
+      "id": "12362506252",
+      "details": "outcome human=unknown model=not_found",
+      "snippet": "Awful update.. Before a week ago I could type in a search for a photo and the relevant photos would be shown. Now I can type in exactly the same search and thousands appear, the vast majority of no re"
+    },
+    {
+      "id": "1wkh4be_paqtvxj",
+      "details": "failure_gate human=unclear model=interpretation",
+      "snippet": "Yes thats the main problem,try searching by date instead of just names it works perfectly fine and sort out the photos in one album so you dont misplace them wherever."
+    },
+    {
+      "id": "23dacf60-656a-44e6-8d7b-fd50ef90f132",
+      "details": "failure_gate human=evaluation model=interpretation; outcome human=not_found model=found",
+      "snippet": "very bad navigation. whenever I have to send or share a photo I never find it in photos, because it never show recently downloaded photos on top. it uses some metadata which is useless. example if I h"
+    },
+    {
+      "id": "0f9ad393-91cc-45eb-bcc2-4882bfbae5f3",
+      "details": "failure_gate human=interpretation model=refinement",
+      "snippet": "It's a pain in the neck to find the photos that I need. They are not organized by category as you claim this version would do. I now I have to pay every month? What's up with that? I have so many pict"
+    },
+    {
+      "id": "c9e7d180-0f7f-48b1-a4e9-4735fbdc8ccf",
+      "details": "outcome human=unknown model=not_found",
+      "snippet": "every time this updates it gets more difficult to find photos. Response isn't helpful. I sort my photos into albums, but the album titles vanish and I'm left with sorting through thousands of files to"
+    },
+    {
+      "id": "14558771493",
+      "details": "failure_gate human=interpretation model=not_search_related",
+      "snippet": "wrong date. so me and my grandmother were looking on this app for her dog that died and she found the last photo and mind you this was taken in 2013 and it said December if 1969"
+    },
+    {
+      "id": "69828992-5205-47f5-932a-fe1fba957d55",
+      "details": "failure_gate human=refinement model=evaluation; outcome human=unknown model=not_found",
+      "snippet": "i don't know where to start with this update. the constant influx of AI is annoying and my pics not being separated by day makes it hard to find what I'm looking for. if it's not broke, don't fix it"
+    },
+    {
+      "id": "10940708231",
+      "details": "outcome human=partly_found model=unknown",
+      "snippet": "Photos. Thank you for this application. I get my old pictures back.I will more happier if I get my pictures for April last year"
+    },
+    {
+      "id": "9bf5689f-66c3-4ea9-b529-9718dc4fc96d",
+      "details": "failure_gate human=not_search_related model=evaluation",
+      "snippet": "My favorites on my Motorola keep getting removed from that folder for no reason! This is the second time it has happened and as an artist, i use the favorites folder to save my references from my scre"
+    },
+    {
+      "id": "13835632545",
+      "details": "failure_gate human=not_search_related model=persistence",
+      "snippet": "Annoying App. Well, they spam you with what they think you want as a video of your images. But if you think you want to save it, or find it later - good luck. You will NEVER be able to view the video "
+    },
+    {
+      "id": "22e17b84-640a-4b5c-8398-6d85a42bf80b",
+      "details": "is_retrieval human=yes model=no; failure_gate human=not_search_related model=unclear; outcome human=not_found model=unknown",
+      "snippet": "Lost all my photos on my telephone because of your software...."
+    }
+  ],
+  "dev_disagreements": [
+    {
+      "id": "13755783095",
+      "details": "failure_gate human=refinement model=evaluation",
+      "snippet": "Removed grouping by month. You removed the grouping by month. Hard to find picture nows. Terrible UX decision"
+    },
+    {
+      "id": "11944351974",
+      "details": "failure_gate human=refinement model=not_search_related",
+      "snippet": "Album Disappointment. I spent a long, looong time organising my Albums into Alphabetical order so that I could find them quickly. Showed this feature off to others and that got them starting with Goog"
+    },
+    {
+      "id": "1f5d3caa-3c00-4ab6-b98f-d584ee0253e3",
+      "details": "failure_gate human=unclear model=expression",
+      "snippet": "Hard to use, crowded with AI... moments, faces pets. can't find the right folder, it's not user friendly."
+    }
+  ],
+  "model_pass2_gate_agreement": 0.912,
+  "integrity": "reported agreement corresponds to the prompt that produced episodes_full.parquet"
+}

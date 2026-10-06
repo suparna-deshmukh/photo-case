@@ -1,0 +1,15 @@
+cue_type,high,medium,low
+person,12,0,0
+place,3,0,0
+time_when,34,1,0
+event_context,3,0,0
+anchor_relation,0,0,0
+visual_detail,10,0,0
+setting,0,0,0
+activity,3,0,0
+emotion_or_vibe,0,0,0
+purpose_or_reason,5,0,0
+text_in_image,11,1,0
+source,11,0,0
+device_or_app,4,1,0
+other,25,0,0

@@ -1,0 +1,50 @@
+{
+  "Goa": {
+    "lat": 15.4909,
+    "lon": 73.8278,
+    "aliases": [
+      "Panjim",
+      "Palolem",
+      "Panaji"
+    ]
+  },
+  "Zuarinagar Goa": {
+    "lat": 15.391,
+    "lon": 73.878,
+    "aliases": [
+      "BITS Goa",
+      "campus",
+      "Zuarinagar"
+    ]
+  },
+  "Bengaluru": {
+    "lat": 12.9716,
+    "lon": 77.5946,
+    "aliases": [
+      "Bangalore"
+    ]
+  },
+  "Pondicherry": {
+    "lat": 11.9416,
+    "lon": 79.8083,
+    "aliases": [
+      "Puducherry",
+      "Pondy"
+    ]
+  },
+  "Gokarna": {
+    "lat": 14.5479,
+    "lon": 74.3188,
+    "aliases": []
+  },
+  "Hampi": {
+    "lat": 15.335,
+    "lon": 76.46,
+    "aliases": []
+  },
+  "Pune": {
+    "lat": 18.5204,
+    "lon": 73.8567,
+    "aliases": []
+  }
+}

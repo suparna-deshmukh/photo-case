@@ -1,0 +1,180 @@
+{
+  "base_url": "https://litellm-cw-tnc7knp4ba-uc.a.run.app/v1",
+  "model_alias": "qwen38-27b",
+  "checked_at": "2026-10-06T04:24:26+0530",
+  "basic_chat": {
+    "ok": true,
+    "status": 200,
+    "dt_s": 2.24,
+    "text": "\n\npong",
+    "headers": {
+      "x-litellm-call-id": "a9a11e68-d0cd-4cac-9175-d6ed3e056546",
+      "x-litellm-model-id": "c26094d7-1ff5-400d-9f16-02a3ae5fe0ec",
+      "x-litellm-model-name": "qwen38-27b",
+      "x-litellm-model-api-base": "https://risa-gemma4-rno2a.f18574.gw.cwinference.com/v1",
+      "x-litellm-version": "1.98.0",
+      "x-litellm-response-cost": "0.00031067499999999995",
+      "x-litellm-response-cost-original": "0.00031067499999999995",
+      "x-litellm-response-cost-discount-amount": "0.0",
+      "x-litellm-response-cost-margin-amount": "0.0",
+      "x-litellm-response-cost-margin-percent": "0.0",
+      "x-litellm-response-cost-input": "2.5075e-05",
+      "x-litellm-response-cost-output": "0.00028559999999999995",
+      "x-litellm-response-cost-tool-usage": "0.0",
+      "x-litellm-key-spend": "53.78895684499997",
+      "x-litellm-response-duration-ms": "1158.874",
+      "x-litellm-overhead-duration-ms": "4.172",
+      "x-litellm-callback-duration-ms": "0.0",
+      "x-litellm-model-group": "qwen38-27b",
+      "x-litellm-attempted-retries": "0",
+      "x-litellm-attempted-fallbacks": "0",
+      "x-frame-options": "DENY",
+      "x-content-type-options": "nosniff",
+      "x-cloud-trace-context": "8f88d44e54fd044ae7cc62a95d7260a0"
+    }
+  },
+  "json_mode": {
+    "ok": true,
+    "status": 200,
+    "accepted": true,
+    "text": "{\"status\": \"ok\"}",
+    "parses": true
+  },
+  "vision": {
+    "ok": true,
+    "status": 200,
+    "accepted": true,
+    "answer": "\n\nRed",
+    "is_vision": true
+  },
+  "think_leak_default": {
+    "ok": true,
+    "status": 200,
+    "leaked": false,
+    "text": "\n\n17 \u00d7 23 = 17 \u00d7 (20 + 3) = (17 \u00d7 20) + (17 \u00d7 3) = 340 + 51 = **391**"
+  },
+  "switch_enable_thinking": {
+    "accepted": true,
+    "status": 200,
+    "error": ""
+  },
+  "switch_thinking_param": {
+    "accepted": true,
+    "status": 200,
+    "error": ""
+  },
+  "context_needle": {
+    "ok": true,
+    "status": 200,
+    "approx_tokens_sent": 6526,
+    "needle": "KX7F2Q9W",
+    "got_needle": true,
+    "text": "\n\nKX7F2Q9W"
+  },
+  "latency_s_5_calls": [
+    2.36,
+    2.53,
+    1.4,
+    1.49,
+    2.6
+  ],
+  "latency_median_s": 2.36,
+  "concurrency_burst": {
+    "n": 4,
+    "statuses": [
+      200,
+      200,
+      200,
+      200
+    ],
+    "any_429": false,
+    "headers_seen": [
+      "x-cloud-trace-context",
+      "x-content-type-options",
+      "x-frame-options",
+      "x-litellm-attempted-fallbacks",
+      "x-litellm-attempted-retries",
+      "x-litellm-call-id",
+      "x-litellm-callback-duration-ms",
+      "x-litellm-key-spend",
+      "x-litellm-model-api-base",
+      "x-litellm-model-group",
+      "x-litellm-model-id",
+      "x-litellm-model-name",
+      "x-litellm-overhead-duration-ms",
+      "x-litellm-response-cost",
+      "x-litellm-response-cost-discount-amount",
+      "x-litellm-response-cost-input",
+      "x-litellm-response-cost-margin-amount",
+      "x-litellm-response-cost-margin-percent",
+      "x-litellm-response-cost-original",
+      "x-litellm-response-cost-output",
+      "x-litellm-response-cost-tool-usage",
+      "x-litellm-response-duration-ms",
+      "x-litellm-version"
+    ]
+  },
+  "secrets_included": false,
+  "hosted": {
+    "base_url": "https://generativelanguage.googleapis.com/v1beta/openai",
+    "model": "gemini-3.8-flash",
+    "checked_at": "2026-10-06T04:56:39+0530",
+    "note": "AI Studio pricing page sign-in-walled for anonymous fetch; model chosen by user from pricing page. Config verified 2026-10-06: models list OK (models/gemini-3.8-flash), chat 200 after transient 503s.",
+    "secrets_included": false,
+    "models_endpoint": {
+      "status": 200,
+      "flash_ids": [
+        "models/gemini-2.5-flash",
+        "models/gemini-2.5-flash-preview-tts",
+        "models/gemini-flash-latest",
+        "models/gemini-flash-lite-latest",
+        "models/gemini-2.5-flash-lite",
+        "models/gemini-2.5-flash-image",
+        "models/gemini-3-flash-preview",
+        "models/gemini-3.1-flash-lite-preview",
+        "models/gemini-3.1-flash-lite",
+        "models/gemini-3.1-flash-image-preview",
+        "models/gemini-3.1-flash-image",
+        "models/gemini-3.1-flash-lite-image",
+        "models/gemini-3.5-flash",
+        "models/gemini-3.5-flash-lite",
+        "models/gemini-omni-flash-preview",
+        "models/gemini-omni-1.1-flash",
+        "models/gemini-3.6-flash",
+        "models/gemini-3.7-flash",
+        "models/gemini-3.8-flash",
+        "models/gemini-3.1-flash-tts-preview",
+        "models/gemini-3.8-flash-tts",
+        "models/gemini-3.8-flash-lite-tts",
+        "models/gemini-2.5-flash-native-audio-latest",
+        "models/gemini-2.5-flash-native-audio-preview-09-2025",
+        "models/gemini-2.5-flash-native-audio-preview-12-2025",
+        "models/gemini-3.1-flash-live-preview"
+      ],
+      "total": 61,
+      "chosen_model_listed": false
+    },
+    "chat": {
+      "status": 503,
+      "dt_s": 3.42,
+      "text": "[{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are "
+    },
+    "json_mode": {
+      "status": 503,
+      "accepted": false,
+      "parses": false,
+      "text": "[{\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are "
+    },
+    "latency_s_3_calls": [
+      null,
+      3.22,
+      null
+    ],
+    "retry_after_503": {
+      "status": 200,
+      "text": "pong",
+      "dt_s": 5.45,
+      "conclusion": "key + model verified working; 503s are transient free-tier demand errors, retry succeeds"
+    }
+  }
+}

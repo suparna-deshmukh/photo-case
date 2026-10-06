@@ -1,0 +1,8 @@
+{
+  "n_scored_cells": 3,
+  "H1": "Top-2 gates interpretation+evaluation = 73.9% of 138 scored episodes; interpretation = 44.9%. H1 NOT SUPPORTED as stated (top gates differ).",
+  "H2": "time_when remembered in 25.4% but missing/forgotten in 2.2% of 138 episodes; context cues (event/person/place/purpose/anchor) remembered on average in 3.3%. H2 MIXED/NOT SUPPORTED.",
+  "H3": "keyword = 27.5% of stated query styles; scroll_timeline workaround = 6.6% of 167 episodes. H3 NOT SUPPORTED quantitatively.",
+  "H4": "document_utility: purpose_or_reason=100.0%, text_in_image=50.0% remembered; trip_event: event_context=0.0%, anchor_relation=0.0% remembered (of 138). H4 SUPPORTED.",
+  "H5": "H5 (success drop after 2 failed queries) CANNOT BE TESTED from cross-sectional feedback data: single-attempt reviews/posts do not expose sequential query counts. Flag as not testable with this data."
+}

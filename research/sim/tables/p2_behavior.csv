@@ -1,0 +1,7 @@
+participant_id,time_to_find_s,probe_success,n_queries,first_query_style,n_reformulations,reformulation_style,fell_back_to_scrolling,used_ask_tab
+P1,95,Y,3,keyword,2,added_info,Y,no
+P2,70,Y,,keyword,0,other,Y,no
+P3,130,Y,2,keyword,1,swapped_keywords,N,no
+P4,25,Y,,keyword,0,other,N,not stated
+P5,110,Y,2,keyword,1,added_info,N,no
+P6,300,partial,3,keyword,2,swapped_keywords,N,no

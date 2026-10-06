@@ -1,0 +1,1074 @@
+{
+  "What kinds of old photos do users struggle to retrieve?": {
+    "answer_markdown": "Users struggle to retrieve **other_unspecified** types of old photos, which account for 115 cases (63.2%) of the 182 total instances. The next most common specific type is **people_social** photos, with 15 cases (8.2%).\n\n- [ep:11585344362] A user struggled to find a specific photo taken on a date 9 months after transferring thousands of photos from an old phone.\n- [ep:1uirwt9] A user reported missing all photos from 2017 to 2019, specifically images of their children growing up.\n- [ep:1wkh4be] A user noted that searching for \"dog\" only returned 6 pictures despite having more, indicating issues with retrieving pet-related photos.",
+    "evidence_ids": [
+      "7f1adf10-627a-4212-9e0a-5c9b69d73e2f",
+      "11585344362",
+      "1uirwt9",
+      "1uirwt9_oun1ff2",
+      "9043772426",
+      "53afa4d3-4827-4771-9216-9589ccc92ca8",
+      "1wkh4be",
+      "36f90c6a-1d3d-4340-b2a0-75079ccf7265"
+    ],
+    "tables": [
+      {
+        "title": "semantic_search k=8 [minilm]",
+        "columns": [
+          "doc_id",
+          "snippet",
+          "score",
+          "failure_gate"
+        ],
+        "rows": [
+          [
+            "7f1adf10-627a-4212-9e0a-5c9b69d73e2f",
+            "this is very disappointing.. while trying to find some old pics which already uploaded a long time ago, I can't find them now. very sure I don't delete those because they are very pretty good memories, and look at them in some time intervals. while using the app with a…",
+            0.5951907634735107,
+            "not_search_related"
+          ],
+          [
+            "11585344362",
+            "Search is not very functional.. I dumped thousands of photos across from my old phone. They got filed under the date they were transferred. I wanted (9 months later) to find a photo taken on that same date on the new phone. It took about 5 hours, including looking for help…",
+            0.5546784996986389,
+            "interpretation"
+          ],
+          [
+            "1uirwt9",
+            "Photos missing but in memory reels? I am missing all my photos from 2017 to 2019. Its very upsetting because it's photos of my 2nd child growing up from 4 or 5 months up and my 3rd child being born to 18 months old. I have all my old phones and cant seem to find them either, I'm…",
+            0.5095341205596924,
+            "not_search_related"
+          ],
+          [
+            "1uirwt9_oun1ff2",
+            "Thats what's confusing. I'll randomly get this photo i havnt seen in forever from that time frame and I get excited and go check, but there is still nothing there from those years! Its driving me crazy. Its pretty random and not a lot.",
+            0.46497616171836853,
+            "not_search_related"
+          ],
+          [
+            "9043772426",
+            "Phunna. I can't find my picture from April 2022 till May 2022",
+            0.46303921937942505,
+            "unclear"
+          ],
+          [
+            "53afa4d3-4827-4771-9216-9589ccc92ca8",
+            "Just bring back the old format; I can't even find or browse my old media unless I search year by year because the main page only shows the camera roll. Who decided that? I used to scroll down, and I'd find everything; now I feel like my own memories are being hidden from me.",
+            0.4580419361591339,
+            "refinement"
+          ],
+          [
+            "1wkh4be",
+            "Search function only shows very few photos No matter what device I try the search function on, it only shows me a few photos. For example, when I search for \"dog\" , only 6 pictures come up (4 from 2015, 2 from this year???) even though I am SURE I have more dog photos. I tried…",
+            0.45526692271232605,
+            "interpretation"
+          ],
+          [
+            "36f90c6a-1d3d-4340-b2a0-75079ccf7265",
+            "Great app, awesome! It really helps, now I shared a link, easy to find my other photos some are ruined and some are just lost even my 11mths. old photo, I remember that I was standing there and hold a matchbox which is bigger in size and to get my attention to the camera, sadly…",
+            0.453533411026001,
+            "persistence"
+          ]
+        ],
+        "n": 8
+      },
+      {
+        "title": "query_stats(photo_type)",
+        "columns": [
+          "table",
+          "photo_type",
+          "n",
+          "share_pct"
+        ],
+        "rows": [
+          [
+            "photo_type",
+            "other_unspecified",
+            115,
+            63.2
+          ],
+          [
+            "photo_type",
+            null,
+            29,
+            15.9
+          ],
+          [
+            "photo_type",
+            "people_social",
+            15,
+            8.2
+          ],
+          [
+            "photo_type",
+            "scenery_pet",
+            7,
+            3.8
+          ],
+          [
+            "photo_type",
+            "video",
+            6,
+            3.3
+          ],
+          [
+            "photo_type",
+            "screenshot",
+            5,
+            2.7
+          ],
+          [
+            "photo_type",
+            "document_utility",
+            3,
+            1.6
+          ],
+          [
+            "photo_type",
+            "trip_event",
+            2,
+            1.1
+          ]
+        ],
+        "n": 182
+      }
+    ],
+    "n": 182,
+    "method": "llm+keywords+llm_answer"
+  },
+  "What do people actually remember about a photo, and what do they forget?": {
+    "answer_markdown": "People most commonly remember the time when a photo was taken (31.3%, n=57), followed by other unspecified cues (18.7%, n=34) and the person in the photo (11.5%, n=21). They most frequently forget the exact date (n=5), followed by visual details (n=4) and the time when (n=3). The evidence is not thin as the total row count n is 209.",
+    "evidence_ids": [
+      "1tgong7",
+      "5b31bb2b-d271-41c0-b3f6-47ae46e8955b",
+      "36f90c6a-1d3d-4340-b2a0-75079ccf7265",
+      "e5c9be75-7682-47dc-9e0e-a1909edc5dff",
+      "7f1adf10-627a-4212-9e0a-5c9b69d73e2f",
+      "54c9ce9a-14d3-4bb2-81d0-cbf572a7d0af",
+      "dc2e8e94-dc16-4dc4-bc57-b815b33f0c8d",
+      "13390079638"
+    ],
+    "tables": [
+      {
+        "title": "query_stats(cue_remembered,cue_missing)",
+        "columns": [
+          "table",
+          "cue_remembered",
+          "n",
+          "share_pct",
+          "cue_missing"
+        ],
+        "rows": [
+          [
+            "cue_remembered",
+            "time_when",
+            57,
+            31.3,
+            null
+          ],
+          [
+            "cue_remembered",
+            "other",
+            34,
+            18.7,
+            null
+          ],
+          [
+            "cue_remembered",
+            "person",
+            21,
+            11.5,
+            null
+          ],
+          [
+            "cue_remembered",
+            "source",
+            19,
+            10.4,
+            null
+          ],
+          [
+            "cue_remembered",
+            "visual_detail",
+            13,
+            7.1,
+            null
+          ],
+          [
+            "cue_remembered",
+            "text_in_image",
+            12,
+            6.6,
+            null
+          ],
+          [
+            "cue_remembered",
+            "device_or_app",
+            9,
+            4.9,
+            null
+          ],
+          [
+            "cue_remembered",
+            "event_context",
+            6,
+            3.3,
+            null
+          ],
+          [
+            "cue_remembered",
+            "activity",
+            5,
+            2.7,
+            null
+          ],
+          [
+            "cue_remembered",
+            "place",
+            5,
+            2.7,
+            null
+          ],
+          [
+            "cue_remembered",
+            "purpose_or_reason",
+            5,
+            2.7,
+            null
+          ],
+          [
+            "cue_remembered",
+            "emotion_or_vibe",
+            2,
+            1.1,
+            null
+          ],
+          [
+            "cue_remembered",
+            "setting",
+            1,
+            0.5,
+            null
+          ],
+          [
+            "cue_missing",
+            null,
+            5,
+            2.7,
+            "exact_date"
+          ],
+          [
+            "cue_missing",
+            null,
+            4,
+            2.2,
+            "visual_detail"
+          ],
+          [
+            "cue_missing",
+            null,
+            3,
+            1.6,
+            "time_when"
+          ],
+          [
+            "cue_missing",
+            null,
+            2,
+            1.1,
+            "person"
+          ],
+          [
+            "cue_missing",
+            null,
+            2,
+            1.1,
+            "place"
+          ],
+          [
+            "cue_missing",
+            null,
+            1,
+            0.5,
+            "device_or_app"
+          ],
+          [
+            "cue_missing",
+            null,
+            1,
+            0.5,
+            "exact file data string"
+          ],
+          [
+            "cue_missing",
+            null,
+            1,
+            0.5,
+            "location"
+          ],
+          [
+            "cue_missing",
+            null,
+            1,
+            0.5,
+            "name"
+          ]
+        ],
+        "n": 209
+      },
+      {
+        "title": "semantic_search k=8 [minilm]",
+        "columns": [
+          "doc_id",
+          "snippet",
+          "score",
+          "failure_gate"
+        ],
+        "rows": [
+          [
+            "1tgong7",
+            "Disappearing photos So, I've had this happen before but never in an instance I remember clearly enough to recollect in detail. A couple of weeks, around a month likely ago, I took a photo. Crazy. About a week later, I, in person, showed someone that photo. They also remember…",
+            0.5529103875160217,
+            "not_search_related"
+          ],
+          [
+            "5b31bb2b-d271-41c0-b3f6-47ae46e8955b",
+            "I love the daily memories feature. But, just as all other photos app its difficult to find a specific, one or few, photos. The search feature is not up to par.",
+            0.5057786703109741,
+            "interpretation"
+          ],
+          [
+            "36f90c6a-1d3d-4340-b2a0-75079ccf7265",
+            "Great app, awesome! It really helps, now I shared a link, easy to find my other photos some are ruined and some are just lost even my 11mths. old photo, I remember that I was standing there and hold a matchbox which is bigger in size and to get my attention to the camera, sadly…",
+            0.46006929874420166,
+            "persistence"
+          ],
+          [
+            "e5c9be75-7682-47dc-9e0e-a1909edc5dff",
+            "Change is sometimes difficult. Finding specific photos varies between easy and challenging, depending on both Google's and your interpretation of search words. The latest changes have made it more difficult to find photos by people's names.. Those albums have disappeared from…",
+            0.4588184952735901,
+            "interpretation"
+          ],
+          [
+            "7f1adf10-627a-4212-9e0a-5c9b69d73e2f",
+            "this is very disappointing.. while trying to find some old pics which already uploaded a long time ago, I can't find them now. very sure I don't delete those because they are very pretty good memories, and look at them in some time intervals. while using the app with a…",
+            0.4559113383293152,
+            "not_search_related"
+          ],
+          [
+            "54c9ce9a-14d3-4bb2-81d0-cbf572a7d0af",
+            "terrible, totally user unfriendly and useless. l can't find what l need, it keeps pictures l don't want anymore, can't even disable it's permissions.",
+            0.4531548023223877,
+            "unclear"
+          ],
+          [
+            "dc2e8e94-dc16-4dc4-bc57-b815b33f0c8d",
+            "sometimes very difficult to find the photos that are saved. The app does not always tell you where it decides to save them so they become hidden photos.",
+            0.4468912184238434,
+            "expression"
+          ],
+          [
+            "13390079638",
+            "Google Photos. Seems to be too difficult for myself to retrieve past photos, not sure the fix.",
+            0.4420854449272156,
+            "expression"
+          ]
+        ],
+        "n": 8
+      }
+    ],
+    "n": 182,
+    "method": "llm+keywords+llm_answer"
+  },
+  "How do users formulate searches when their memory is incomplete?": {
+    "answer_markdown": "Users primarily formulate searches using keywords (n=50, 27.5%) or by browsing/scrolling (n=34, 18.7%) when their memory is incomplete, while 34.6% (n=63) did not state a specific search behavior. The style table covers n=182 episodes, so the evidence is not thin. The most common specific type is keyword search.\n\n-  Keyword search is the most common specific style with n=50 (27.5%), followed by browse_scroll with n=34 (18.7%).\n-  A significant portion of users (n=63, 34.6%) had 'none_stated' search behavior, indicating no specific search method was described.\n- [ep:823fb45a-ebb4-4721-bb4d-7565ed12f99a] Users report that searches requiring clarification (n=1 in this snippet context, but part of the broader 'refinement' failure gate) are difficult, suggesting incomplete memory leads to iterative or refined queries.",
+    "evidence_ids": [
+      "823fb45a-ebb4-4721-bb4d-7565ed12f99a",
+      "e170c506-439d-44cb-bffa-f313cf97f737",
+      "ada4c676-9822-4a94-8ebe-e292625e14a9",
+      "12935081286",
+      "1f5d3caa-3c00-4ab6-b98f-d584ee0253e3",
+      "11768912810",
+      "11231541266",
+      "54c9ce9a-14d3-4bb2-81d0-cbf572a7d0af"
+    ],
+    "tables": [
+      {
+        "title": "semantic_search k=8 [minilm]",
+        "columns": [
+          "doc_id",
+          "snippet",
+          "score",
+          "failure_gate"
+        ],
+        "rows": [
+          [
+            "823fb45a-ebb4-4721-bb4d-7565ed12f99a",
+            "The search has ruined 20 years of careful intentional activity. the most basic things cannot be found now. searches that would have narrowed down and put a result out. now take five or six clarifications, including having to shut down the noise generated by the app",
+            0.46088820695877075,
+            "refinement"
+          ],
+          [
+            "e170c506-439d-44cb-bffa-f313cf97f737",
+            "the new AI search is absolutely trash. way worse for putting a word in to find an old meme",
+            0.4353567957878113,
+            "interpretation"
+          ],
+          [
+            "ada4c676-9822-4a94-8ebe-e292625e14a9",
+            "I love the new Ai additional help in the search bar. However, when I request a search using words I know are included in what I'm looking for, it comes up empty. I know with time this would be improved upon. All in all, I'm still extremely pleased with the app 👌🏽",
+            0.4337543845176697,
+            "interpretation"
+          ],
+          [
+            "12935081286",
+            "Search. Not good, ok if you search for stuff on generic keys, such as boats or trains. Poor on specifics like serial numbers on trains. Used to be good on train serial numbers but not any more. Old versions were great but latest versions are no good at all, surely this can be…",
+            0.41114962100982666,
+            "interpretation"
+          ],
+          [
+            "1f5d3caa-3c00-4ab6-b98f-d584ee0253e3",
+            "Hard to use, crowded with AI... moments, faces pets. can't find the right folder, it's not user friendly.",
+            0.4107435643672943,
+            "expression"
+          ],
+          [
+            "11768912810",
+            "This had the best meta search feature I've ever used. After the latest update when I search for text the most random things appear. Before the update I would search for \"green\" and a random photo would appear. After zooming in I might see the most minuscule word in green…",
+            0.41033411026000977,
+            "interpretation"
+          ],
+          [
+            "11231541266",
+            "At my age - not intuitive. Love the ability to snap & share, though still find myself falling short when trying to locate \"that snap\".",
+            0.40273189544677734,
+            "expression"
+          ],
+          [
+            "54c9ce9a-14d3-4bb2-81d0-cbf572a7d0af",
+            "terrible, totally user unfriendly and useless. l can't find what l need, it keeps pictures l don't want anymore, can't even disable it's permissions.",
+            0.3980463147163391,
+            "unclear"
+          ]
+        ],
+        "n": 8
+      },
+      {
+        "title": "query_stats(query_style)",
+        "columns": [
+          "table",
+          "query_style",
+          "n",
+          "share_pct"
+        ],
+        "rows": [
+          [
+            "query_style",
+            "none_stated",
+            63,
+            34.6
+          ],
+          [
+            "query_style",
+            "keyword",
+            50,
+            27.5
+          ],
+          [
+            "query_style",
+            "browse_scroll",
+            34,
+            18.7
+          ],
+          [
+            "query_style",
+            "date_or_filter",
+            17,
+            9.3
+          ],
+          [
+            "query_style",
+            "people_or_face",
+            8,
+            4.4
+          ],
+          [
+            "query_style",
+            "map_or_place",
+            3,
+            1.6
+          ],
+          [
+            "query_style",
+            "natural_language",
+            3,
+            1.6
+          ],
+          [
+            "query_style",
+            null,
+            3,
+            1.6
+          ],
+          [
+            "query_style",
+            "ask_photos_chat",
+            1,
+            0.5
+          ]
+        ],
+        "n": 182
+      }
+    ],
+    "n": 182,
+    "method": "llm+keywords+llm_answer"
+  },
+  "Where in the retrieval journey does it break most, and did Ask Photos change that?": {
+    "answer_markdown": "The retrieval journey breaks most at the **interpretation** stage, accounting for 62 cases (34.1%) of the 182 total failures. Ask Photos did not change this, as interpretation remained the top failure gate in the **wider_rollout** era with 52 cases (28.6%). The evidence is not thin as the total row count n is 182.",
+    "evidence_ids": [
+      "10940708231",
+      "54c9ce9a-14d3-4bb2-81d0-cbf572a7d0af",
+      "1tgong7",
+      "12362506252",
+      "5b31bb2b-d271-41c0-b3f6-47ae46e8955b"
+    ],
+    "tables": [
+      {
+        "title": "query_stats(failure_gate)",
+        "columns": [
+          "table",
+          "failure_gate",
+          "n",
+          "share_pct"
+        ],
+        "rows": [
+          [
+            "failure_gate",
+            "interpretation",
+            62,
+            34.1
+          ],
+          [
+            "failure_gate",
+            "evaluation",
+            40,
+            22.0
+          ],
+          [
+            "failure_gate",
+            "expression",
+            26,
+            14.3
+          ],
+          [
+            "failure_gate",
+            "not_search_related",
+            23,
+            12.6
+          ],
+          [
+            "failure_gate",
+            null,
+            15,
+            8.2
+          ],
+          [
+            "failure_gate",
+            "unclear",
+            6,
+            3.3
+          ],
+          [
+            "failure_gate",
+            "persistence",
+            5,
+            2.7
+          ],
+          [
+            "failure_gate",
+            "refinement",
+            5,
+            2.7
+          ]
+        ],
+        "n": 182
+      },
+      {
+        "title": "query_stats(failure_gate,era)",
+        "columns": [
+          "table",
+          "failure_gate",
+          "era",
+          "n",
+          "share_pct"
+        ],
+        "rows": [
+          [
+            "failure_gate+era",
+            "interpretation",
+            "wider_rollout",
+            52,
+            28.6
+          ],
+          [
+            "failure_gate+era",
+            "evaluation",
+            "wider_rollout",
+            36,
+            19.8
+          ],
+          [
+            "failure_gate+era",
+            "expression",
+            "wider_rollout",
+            20,
+            11.0
+          ],
+          [
+            "failure_gate+era",
+            "not_search_related",
+            "wider_rollout",
+            20,
+            11.0
+          ],
+          [
+            "failure_gate+era",
+            null,
+            "pre_ask",
+            11,
+            6.0
+          ],
+          [
+            "failure_gate+era",
+            "interpretation",
+            "pre_ask",
+            6,
+            3.3
+          ],
+          [
+            "failure_gate+era",
+            "refinement",
+            "wider_rollout",
+            5,
+            2.7
+          ],
+          [
+            "failure_gate+era",
+            "expression",
+            "pre_ask",
+            5,
+            2.7
+          ],
+          [
+            "failure_gate+era",
+            "persistence",
+            "wider_rollout",
+            5,
+            2.7
+          ],
+          [
+            "failure_gate+era",
+            null,
+            "wider_rollout",
+            4,
+            2.2
+          ],
+          [
+            "failure_gate+era",
+            "interpretation",
+            "early_access",
+            4,
+            2.2
+          ],
+          [
+            "failure_gate+era",
+            "unclear",
+            "wider_rollout",
+            4,
+            2.2
+          ],
+          [
+            "failure_gate+era",
+            "unclear",
+            "pre_ask",
+            2,
+            1.1
+          ],
+          [
+            "failure_gate+era",
+            "evaluation",
+            "early_access",
+            2,
+            1.1
+          ],
+          [
+            "failure_gate+era",
+            "evaluation",
+            "pre_ask",
+            2,
+            1.1
+          ],
+          [
+            "failure_gate+era",
+            "not_search_related",
+            "early_access",
+            2,
+            1.1
+          ],
+          [
+            "failure_gate+era",
+            "not_search_related",
+            "pre_ask",
+            1,
+            0.5
+          ],
+          [
+            "failure_gate+era",
+            "expression",
+            "early_access",
+            1,
+            0.5
+          ]
+        ],
+        "n": 182
+      },
+      {
+        "title": "semantic_search k=5 [minilm]",
+        "columns": [
+          "doc_id",
+          "snippet",
+          "score",
+          "failure_gate"
+        ],
+        "rows": [
+          [
+            "10940708231",
+            "Photos. Thank you for this application. I get my old pictures back.I will more happier if I get my pictures for April last year",
+            0.7133429050445557,
+            "unclear"
+          ],
+          [
+            "54c9ce9a-14d3-4bb2-81d0-cbf572a7d0af",
+            "terrible, totally user unfriendly and useless. l can't find what l need, it keeps pictures l don't want anymore, can't even disable it's permissions.",
+            0.6403931379318237,
+            "unclear"
+          ],
+          [
+            "1tgong7",
+            "Disappearing photos So, I've had this happen before but never in an instance I remember clearly enough to recollect in detail. A couple of weeks, around a month likely ago, I took a photo. Crazy. About a week later, I, in person, showed someone that photo. They also remember…",
+            0.6031585931777954,
+            "not_search_related"
+          ],
+          [
+            "12362506252",
+            "Awful update.. Before a week ago I could type in a search for a photo and the relevant photos would be shown. Now I can type in exactly the same search and thousands appear, the vast majority of no relevance. For me this s one of the main features I pay a subscription for but if…",
+            0.5862468481063843,
+            "evaluation"
+          ],
+          [
+            "5b31bb2b-d271-41c0-b3f6-47ae46e8955b",
+            "I love the daily memories feature. But, just as all other photos app its difficult to find a specific, one or few, photos. The search feature is not up to par.",
+            0.5798348784446716,
+            "interpretation"
+          ]
+        ],
+        "n": 5
+      }
+    ],
+    "n": 182,
+    "method": "llm+keywords+llm_answer"
+  },
+  "Compare document/utility photos with trip/event photos: where does each fail?": {
+    "answer_markdown": "Document/utility photos (n=3) show failures split equally among interpretation, persistence, and unstated causes (33.3% each), while trip/event photos (n=2) show failures split between expression (50.0%) and unstated causes (50.0%). The evidence is thin because the total row count n across all tables is 5, which is under 20.\n\n- Document/utility photos: 1 case of interpretation failure and 1 case of persistence failure [ep:bbdfc7a1-63cb-4553-9b5d-f3c5be6663ba], [ep:6dbbe3c7-21d6-4e60-9cab-a0321bcecade].\n- Trip/event photos: 1 case of expression failure [ep:12679939864].\n- Unstated failure causes account for 1 case in document/utility photos and 1 case in trip/event photos.",
+    "evidence_ids": [
+      "12679939864",
+      "6dbbe3c7-21d6-4e60-9cab-a0321bcecade",
+      "bbdfc7a1-63cb-4553-9b5d-f3c5be6663ba"
+    ],
+    "tables": [
+      {
+        "title": "query_stats(failure_gate) filters={'photo_type': ['document_utility']}",
+        "columns": [
+          "table",
+          "failure_gate",
+          "n",
+          "share_pct"
+        ],
+        "rows": [
+          [
+            "failure_gate",
+            "interpretation",
+            1,
+            33.3
+          ],
+          [
+            "failure_gate",
+            "persistence",
+            1,
+            33.3
+          ],
+          [
+            "failure_gate",
+            null,
+            1,
+            33.3
+          ]
+        ],
+        "n": 3
+      },
+      {
+        "title": "query_stats(failure_gate) filters={'photo_type': ['trip_event']}",
+        "columns": [
+          "table",
+          "failure_gate",
+          "n",
+          "share_pct"
+        ],
+        "rows": [
+          [
+            "failure_gate",
+            "expression",
+            1,
+            50.0
+          ],
+          [
+            "failure_gate",
+            null,
+            1,
+            50.0
+          ]
+        ],
+        "n": 2
+      },
+      {
+        "title": "semantic_search k=8 [minilm]",
+        "columns": [
+          "doc_id",
+          "snippet",
+          "score",
+          "failure_gate"
+        ],
+        "rows": [
+          [
+            "12679939864",
+            "Worlds largest tech company can't even implement sorting methods…. This app is ok for sharing photos when you are on a group trip, and unlike with google drive (which is horrible) at least here you know where the photos are saved. However, I find it a joke that once uploaded,…",
+            0.2880498468875885,
+            "expression"
+          ],
+          [
+            "6dbbe3c7-21d6-4e60-9cab-a0321bcecade",
+            "Fix Google Photos, PLZZZZ! It used to be my favorite, GO TO for photos until a few weeks ago. I'm an artist, photographer, and major ADHD - I have come to rely on GP so much it's almost 2nd skin, and saved me so much time & hassle.Now, I can't even find all of my photos, albums,…",
+            0.2756766676902771,
+            "persistence"
+          ],
+          [
+            "bbdfc7a1-63cb-4553-9b5d-f3c5be6663ba",
+            "AI search is slower, less accurate, and more presumptuous than the version we had before. When AI search first came out, we even had a choice between the two, no longer. It's forced AI that interests the companies' surveillance more than the customers' choice, and I'll be…",
+            0.15254521369934082,
+            "interpretation"
+          ]
+        ],
+        "n": 3
+      }
+    ],
+    "n": 182,
+    "method": "llm+keywords+llm_answer"
+  },
+  "What workarounds do people use after search fails?": {
+    "answer_markdown": "In 135 failed or partly-failed searches (n=135), 81 (60.0%) state no workaround. Among stated workarounds, using another service is most common (n=9, 6.7%), followed by scrolling the timeline (n=7, 5.2%) and searching in another app (n=5, 3.7%). The evidence is not thin as the total row count n is 135.",
+    "evidence_ids": [
+      "12362506252",
+      "d6276e7a-5d2b-4533-ac69-4242148d9e22",
+      "024d9885-cecd-4002-8908-fbb4bfc71205",
+      "2530ee6e-ba36-4da9-a8b4-5a7b57de60aa",
+      "31ab9f12-ffb4-4711-ad73-cc3f4af13a3b",
+      "14230042732",
+      "9bae19b0-2f3a-41a7-a22e-d54a09dfbbb7",
+      "fb853800-f7d4-4c6c-aa94-30548f6bfa21"
+    ],
+    "tables": [
+      {
+        "title": "query_stats(workaround) filters={'outcome': ['not_found', 'partly_found']}",
+        "columns": [
+          "table",
+          "workaround",
+          "n",
+          "share_pct"
+        ],
+        "rows": [
+          [
+            "workaround",
+            "none_stated",
+            81,
+            60.0
+          ],
+          [
+            "workaround",
+            null,
+            27,
+            20.0
+          ],
+          [
+            "workaround",
+            "use_other_service",
+            9,
+            6.7
+          ],
+          [
+            "workaround",
+            "scroll_timeline",
+            7,
+            5.2
+          ],
+          [
+            "workaround",
+            "search_other_app",
+            5,
+            3.7
+          ],
+          [
+            "workaround",
+            "gave_up",
+            4,
+            3.0
+          ],
+          [
+            "workaround",
+            "manual_albums_or_favorites",
+            1,
+            0.7
+          ],
+          [
+            "workaround",
+            "switch_to_classic_search",
+            1,
+            0.7
+          ]
+        ],
+        "n": 135
+      },
+      {
+        "title": "semantic_search k=8 [minilm]",
+        "columns": [
+          "doc_id",
+          "snippet",
+          "score",
+          "failure_gate"
+        ],
+        "rows": [
+          [
+            "12362506252",
+            "Awful update.. Before a week ago I could type in a search for a photo and the relevant photos would be shown. Now I can type in exactly the same search and thousands appear, the vast majority of no relevance. For me this s one of the main features I pay a subscription for but if…",
+            0.7345583438873291,
+            "evaluation"
+          ],
+          [
+            "d6276e7a-5d2b-4533-ac69-4242148d9e22",
+            "Photos used to be the perfect photos app. it had the best search funding of any app. I used to race iphone users to see how far we could find the same photo and I always won. Now this near perfect search function has been replaced by AI, which not only doesn't return the photos…",
+            0.7221695184707642,
+            "interpretation"
+          ],
+          [
+            "024d9885-cecd-4002-8908-fbb4bfc71205",
+            "Going to have to find a new photo app. The AI updates have made this app unusable from its original purpose to me. Being able to search and catalog my photos when I have over thousands of them was extremely important to me. And now that function does not work at all. The AI will…",
+            0.7203750610351562,
+            "interpretation"
+          ],
+          [
+            "2530ee6e-ba36-4da9-a8b4-5a7b57de60aa",
+            "The search function is garbage now. Keywords that I used to search for pictures that would bring back hundreds of pics, including the ones I was looking for, now bring \"No Results.\" Why did you break it like this?",
+            0.7165669202804565,
+            "interpretation"
+          ],
+          [
+            "31ab9f12-ffb4-4711-ad73-cc3f4af13a3b",
+            "Search used to be effortless, but the latest updates ruined it. It can't locate anything anymore even obvious photos that I know are right there in my library. Frustrating to see a core feature stop working properly. peak enshittification",
+            0.6964656710624695,
+            "interpretation"
+          ],
+          [
+            "14230042732",
+            "AI has made this useless. With the recent updates I increasingly find if I search for any photos, then issue a follow up query, it will completely ignore the initial search results and describe some random photo from my library that has nothing to do with what I was searching…",
+            0.6805638074874878,
+            "interpretation"
+          ],
+          [
+            "9bae19b0-2f3a-41a7-a22e-d54a09dfbbb7",
+            "the app has been so poor recently with the search keywords. even when your photo is being backedup, you still have to look for it manually. I wonder whats the usefulness of the search if you cant find your pictures without seeing \"no results\"",
+            0.6796920299530029,
+            "interpretation"
+          ],
+          [
+            "fb853800-f7d4-4c6c-aa94-30548f6bfa21",
+            "this app used to be perfect, but the quality has gone downhill. the new ai search rarely finds the photos i want in comparison to the old search where i'd find my photos every time. there's also a recent bug where adding photos to an album sometimes creates duplicates, and they…",
+            0.6746209859848022,
+            "interpretation"
+          ]
+        ],
+        "n": 8
+      },
+      {
+        "title": "query_stats(failure_gate)",
+        "columns": [
+          "table",
+          "failure_gate",
+          "n",
+          "share_pct"
+        ],
+        "rows": [
+          [
+            "failure_gate",
+            "interpretation",
+            62,
+            34.1
+          ],
+          [
+            "failure_gate",
+            "evaluation",
+            40,
+            22.0
+          ],
+          [
+            "failure_gate",
+            "expression",
+            26,
+            14.3
+          ],
+          [
+            "failure_gate",
+            "not_search_related",
+            23,
+            12.6
+          ],
+          [
+            "failure_gate",
+            null,
+            15,
+            8.2
+          ],
+          [
+            "failure_gate",
+            "unclear",
+            6,
+            3.3
+          ],
+          [
+            "failure_gate",
+            "persistence",
+            5,
+            2.7
+          ],
+          [
+            "failure_gate",
+            "refinement",
+            5,
+            2.7
+          ]
+        ],
+        "n": 182
+      }
+    ],
+    "n": 182,
+    "method": "llm+keywords+llm_answer"
+  }
+}

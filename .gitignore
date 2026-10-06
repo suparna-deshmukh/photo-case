@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+logs/
+cache/
+library/images/
+space_jog/images/
+space_jog/logs/
+space_jog/logs_ui_error.txt
+figures/*.webm
+space_jog/data/faces/
+*.bak*

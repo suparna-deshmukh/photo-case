@@ -1,0 +1,4 @@
+photo_type,failure_gate,n_cell,sev,gap,gap_flag,lev,freq,score,score_no_lev,p_top3,rank,rank_no_lev
+other_unspecified,expression,19,0.685,1.0,False,0.8,0.2346,72.125,70.1562,1.0,3,3
+other_unspecified,interpretation,35,0.761,0.933,False,0.6,0.4321,84.685,90.8562,1.0,1,1
+other_unspecified,evaluation,27,0.687,0.917,False,0.8,0.3333,78.515,78.1438,1.0,2,2

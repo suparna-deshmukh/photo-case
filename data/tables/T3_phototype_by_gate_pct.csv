@@ -1,0 +1,8 @@
+photo_type,expression,interpretation,evaluation,refinement,persistence
+trip_event,100.0,0.0,0.0,0.0,0.0
+people_social,10.0,60.0,20.0,0.0,10.0
+scenery_pet,0.0,100.0,0.0,0.0,0.0
+document_utility,0.0,50.0,0.0,0.0,50.0
+screenshot,40.0,40.0,20.0,0.0,0.0
+video,0.0,0.0,66.7,0.0,33.3
+other_unspecified,21.8,40.2,31.0,5.7,1.1

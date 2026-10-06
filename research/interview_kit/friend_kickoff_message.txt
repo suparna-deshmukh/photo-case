@@ -1,0 +1,17 @@
+Hey! I'm doing a small student research project on how people find old photos in Google Photos. I need you to run ONE 25-minute interview call with a classmate/friend who uses Google Photos (details below). No prep needed from them, and no product is being tested or sold.
+
+WHAT TO SEND ME (before the call):
+1. This script — read it once fully: interviewer_script_friend.md
+2. The codebook: codebook.md (the labels you use while noting)
+3. The note sheet template: notes_template.csv (fill one row per interview)
+
+HOW TO FIND A PARTICIPANT:
+- Ask in your batch/hostel WhatsApp groups: "Studying how people find old photos on their phones — 25-min call, no prep, small thank-you. Android users with 2-3+ years of Google Photos backup preferred."
+- Pick someone with 2,000+ photos if possible (ask how long they've backed up).
+- Not more than 1 interview per person; tell me how you know them (friend/acquaintance).
+
+AFTER THE CALL:
+- Fill your row in notes_template.csv (or the shared sheet) and send it to me same day.
+- If you recorded audio, send me the file or delete it after writing notes (your choice, with their consent).
+
+It's ~30 min of your time total. Small thank-you at the end. Thanks!

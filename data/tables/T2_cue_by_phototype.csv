@@ -1,0 +1,8 @@
+,person,place,time_when,event_context,anchor_relation,visual_detail,setting,activity,emotion_or_vibe,purpose_or_reason,text_in_image,source,device_or_app,other
+trip_event,0.0,0.0,100.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,100.0,0.0,0.0
+people_social,90.0,0.0,20.0,0.0,0.0,10.0,0.0,10.0,0.0,10.0,10.0,10.0,0.0,0.0
+scenery_pet,0.0,0.0,20.0,0.0,0.0,80.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,40.0
+document_utility,0.0,0.0,0.0,50.0,0.0,0.0,0.0,0.0,0.0,100.0,50.0,0.0,0.0,0.0
+screenshot,0.0,0.0,20.0,0.0,0.0,0.0,0.0,0.0,0.0,20.0,20.0,20.0,0.0,60.0
+video,33.3,0.0,33.3,0.0,0.0,33.3,0.0,33.3,0.0,0.0,0.0,0.0,0.0,33.3
+other_unspecified,2.3,2.3,32.2,2.3,0.0,4.6,0.0,1.1,0.0,1.1,8.0,9.2,5.7,20.7

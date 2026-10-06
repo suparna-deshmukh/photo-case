@@ -1,0 +1,98 @@
+{
+  "photo_type": [
+    "trip_event",
+    "people_social",
+    "food_place",
+    "scenery_pet",
+    "document_utility",
+    "screenshot",
+    "video",
+    "other_unspecified"
+  ],
+  "retrieval_intent": [
+    "find_specific_photo",
+    "find_set_or_moment",
+    "find_info_inside_photo",
+    "find_by_person",
+    "other"
+  ],
+  "photo_age": [
+    "recent_lt_6m",
+    "six_to_24m",
+    "over_2y",
+    "unspecified"
+  ],
+  "cue_type": [
+    "person",
+    "place",
+    "time_when",
+    "event_context",
+    "anchor_relation",
+    "visual_detail",
+    "setting",
+    "activity",
+    "emotion_or_vibe",
+    "purpose_or_reason",
+    "text_in_image",
+    "source",
+    "device_or_app",
+    "other"
+  ],
+  "cue_certainty": [
+    "high",
+    "medium",
+    "low"
+  ],
+  "query_style": [
+    "keyword",
+    "natural_language",
+    "date_or_filter",
+    "people_or_face",
+    "map_or_place",
+    "browse_scroll",
+    "ask_photos_chat",
+    "none_stated"
+  ],
+  "workaround": [
+    "scroll_timeline",
+    "search_other_app",
+    "ask_other_person",
+    "manual_albums_or_favorites",
+    "rename_or_describe",
+    "use_other_service",
+    "switch_to_classic_search",
+    "gave_up",
+    "none_stated"
+  ],
+  "outcome": [
+    "found",
+    "partly_found",
+    "not_found",
+    "unknown"
+  ],
+  "stakes": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "failure_gate": [
+    "expression",
+    "interpretation",
+    "evaluation",
+    "refinement",
+    "persistence",
+    "not_search_related",
+    "unclear"
+  ],
+  "era": [
+    "pre_ask",
+    "early_access",
+    "wider_rollout"
+  ],
+  "source": [
+    "play",
+    "appstore",
+    "reddit",
+    "community"
+  ]
+}
