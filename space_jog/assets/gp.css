@@ -24,23 +24,13 @@
 }
 @font-face {
   font-family: "Google Sans Flex";
-  font-weight: 400; font-style: normal; font-display: swap;
-  src: url("assets/google-sans-flex-400.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Google Sans Flex";
-  font-weight: 500; font-style: normal; font-display: swap;
-  src: url("assets/google-sans-flex-500.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Google Sans Flex";
-  font-weight: 600; font-style: normal; font-display: swap;
-  src: url("assets/google-sans-flex-600.woff2") format("woff2");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+  src: url("/app/static/google-sans-flex-var.woff2") format("woff2");
 }
 @font-face {
   font-family: "Roboto Flex";
   font-weight: 100 900; font-style: normal; font-display: swap;
-  src: url("assets/roboto-flex.woff2") format("woff2");
+  src: url("/app/static/roboto-flex.woff2") format("woff2");
 }
 * { font-family: "Google Sans Flex", "Roboto Flex", system-ui, -apple-system, sans-serif; }
 html, body, [class*="css"] { background: var(--gp-surface); }
@@ -795,6 +785,10 @@ header[data-testid="stHeader"] {display: none;}
 
 /* ============ lightbox ============ */
 [data-testid="stDialog"]:has(.gplb) { background: rgba(10,10,12,.96) !important; }
+[data-testid="stDialog"]:has(.gplb) [class*="st-key-icb_"] [data-testid="stButton"] > button:hover {
+  background: rgba(255,255,255,.18) !important; }
+[data-testid="stDialog"]:has(.gplb) [class*="st-key-icb_"] [data-testid="stButton"] > button:focus-visible {
+  outline: 2px solid rgba(255,255,255,.8); outline-offset: 2px; }
 [data-testid="stDialog"]:has(.gplb) [data-testid="stVerticalBlock"] { max-width: 760px; }
 [data-testid="stDialog"]:has(.gplb) [data-testid="stVerticalBlockContainer"] {
   padding: 16px !important; }
@@ -866,3 +860,21 @@ html, body { overflow-x: hidden; }
   background: var(--gp-surface-container) !important; color: var(--gp-on-surface) !important;
   border: 1px solid var(--gp-outline-variant) !important; font-size: 14px !important;
   font-weight: 500 !important; margin-bottom: 8px; }
+
+/* ============ mobile (<900px): fix Streamlit 1.65 column stacking ============
+   In this version, percentage flex-basis inside nested flex resolves against
+   ~3x the container width below ~700px, so every column wraps to full width.
+   Force single-row flex with equal split; weighted rows restore proportions
+   via _wrow() keyed style blocks. */
+@media (max-width: 899px) {
+  [data-testid="stHorizontalBlock"] { flex-wrap: nowrap !important; }
+  [data-testid="stHorizontalBlock"] > div {
+    flex: 1 1 0 !important; width: auto !important; min-width: 0 !important; }
+  /* chip edit menu: two buttons per row */
+  [class*="st-key-wr_chip_"] [data-testid="stHorizontalBlock"] { flex-wrap: wrap !important; }
+  [class*="st-key-wr_chip_"] [data-testid="stHorizontalBlock"] > div { flex: 1 1 148px !important; }
+  /* which-is-closer pair images */
+  [class*="st-key-pair_"] [data-testid="stImage"] { border-radius: 16px; overflow: hidden; margin: 0; }
+  [class*="st-key-pair_"] [data-testid="stImage"] img {
+    width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+}

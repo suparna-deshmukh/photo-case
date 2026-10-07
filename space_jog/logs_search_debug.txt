@@ -1,0 +1,10 @@
+text='sunset boat'
+sims type=<class 'numpy.ndarray'> shape=(3252,)
+emb type=<class 'numpy.ndarray'> shape=(3252, 512)
+qv type=<class 'numpy.ndarray'> shape=(512,)
+boost type=<class 'NoneType'> shape=None
+fn name=classic_boost module=__main__
+fn file=/Users/apple/photo_case/.venv/lib/python3.13/site-packages/streamlit/elements/dialog_decorator.py line=87
+fn consts=['@st.dialog', 'Callable[[], None]']
+globals_id=4426559616 module_globals=False
+np is np2=True

@@ -43,6 +43,16 @@ def _sparkle_uri(s=24):
 def _pinwheel_uri(s=26):
     return "data:image/svg+xml;utf8," + pinwheel(s).replace('"', "'").replace("#", "%23")
 
+def _wrow(key, weights):
+    """Restore weighted column proportions on mobile (<900px), where Streamlit 1.65
+    mis-resolves percentage flex-basis and stacks columns."""
+    parts = "".join(
+        f'.st-key-{key} [data-testid="stHorizontalBlock"] > div:nth-child({i + 1})'
+        f'{{flex:{w} 1 0 !important;}}'
+        for i, w in enumerate(weights))
+    st.markdown(f'<style>@media (max-width: 899px) {{{{parts}}}}</style>', unsafe_allow_html=True)
+
+
 def iconbtn(key, name, label, s=24, c="#444746", kind="default", svg=None):
     """Icon-only button: accessible name = label (never visible), 40px circle.
     kind: default | tonal | back (44px)."""
@@ -166,6 +176,8 @@ def _mic_mark(target):
 if "anon_session" not in st.session_state:
     st.session_state["anon_session"] = str(uuid.uuid4())
     log_event("free", "free", "session_start", {"queue": None})
+if "live_session" not in st.session_state:
+    st.session_state["live_session"] = {"live_calls": 0}
 log_event("free", "free", "live_status", {"mode": live_llm.mode_label()})
 
 def _reset_all():
@@ -192,14 +204,18 @@ def _ask_from_pill():
 
 def desktop_bar():
     with st.container(key="gptop"):
-        row = st.columns([0.8, 2.4, 0.6], vertical_alignment="center", gap="small")
+        with st.container(key="wr_01"):
+            row = st.columns([0.8, 2.4, 0.6], vertical_alignment="center", gap="small")
+        _wrow("wr_01", [0.8, 2.4, 0.6])
         with row[0]:
             st.markdown(f'<div class="gptb-brand">{pinwheel(26)}<span>Photos</span></div>',
                         unsafe_allow_html=True)
         with row[1]:
             with st.container(key="gpsearchpill"):
-                i_a, i_b, i_c, i_d = st.columns([0.4, 6, 0.35, 1.15],
-                                                vertical_alignment="center", gap="small")
+                with st.container(key="wr_02"):
+                    i_a, i_b, i_c, i_d = st.columns([0.4, 6, 0.35, 1.15],
+                                                    vertical_alignment="center", gap="small")
+                _wrow("wr_02", [0.4, 6, 0.35, 1.15])
                 with i_a:
                     st.markdown(f'<div class="gpp-searchicon">{icon("search", 20, "#444746")}</div>',
                                 unsafe_allow_html=True)
@@ -291,7 +307,9 @@ def sidebar():
 
 def mobile_top():
     with st.container(key="gptopm"):
-        row = st.columns([1, 1], vertical_alignment="center")
+        with st.container(key="wr_03"):
+            row = st.columns([1, 1], vertical_alignment="center")
+        _wrow("wr_03", [1, 1])
         with row[0]:
             st.markdown(f'<div class="gptb-brand">{pinwheel(24)}<span>Photos</span></div>',
                         unsafe_allow_html=True)
@@ -307,7 +325,9 @@ def mobile_top():
 def float_nav():
     view = st.session_state.get("view", "home")
     with st.container(key="gpfloat"):
-        row = st.columns([1, 1, 1.25, 0.25], gap="small", vertical_alignment="center")
+        with st.container(key="wr_04"):
+            row = st.columns([1, 1, 1.25, 0.25], gap="small", vertical_alignment="center")
+        _wrow("wr_04", [1, 1, 1.25, 0.25])
         with row[0]:
             with st.container(key="navpill_photos"):
                 if st.button("Photos", key="fnav_photos"):
@@ -349,7 +369,9 @@ def demo_notice():
     if st.session_state.get("demo_dismissed"):
         return
     with st.container(key="gpdemo"):
-        row = st.columns([0.7, 5, 0.5], vertical_alignment="center", gap="small")
+        with st.container(key="wr_05"):
+            row = st.columns([0.7, 5, 0.5], vertical_alignment="center", gap="small")
+        _wrow("wr_05", [0.7, 5, 0.5])
         with row[0]:
             st.markdown(f'<div class="gpdemo-chip">{C.DEMO_CHIP}</div>', unsafe_allow_html=True)
         with row[1]:
@@ -468,7 +490,9 @@ def _filter_chip():
         t = (META["caption"].fillna("") + " " + META["objects"].fillna("")).str.lower()
         n = int(t.str.contains(f["val"], regex=True).sum())
     with st.container(key="gpfchip"):
-        row = st.columns([5, 0.6], vertical_alignment="center")
+        with st.container(key="wr_06"):
+            row = st.columns([5, 0.6], vertical_alignment="center")
+        _wrow("wr_06", [5, 0.6])
         with row[0]:
             st.markdown(f'<div class="gpfchip-t">{esc(f["title"])} &middot; {C.plural(n)}</div>',
                         unsafe_allow_html=True)
@@ -490,7 +514,9 @@ def photos_home():
     if st.session_state.get("jog_free") and not st.session_state.get("ask_success_free"):
         q = (st.session_state.get("jog_text_free") or "")[:80]
         with st.container(key="gresume"):
-            row = st.columns([1.2, 3, 1, 0.5], vertical_alignment="center", gap="small")
+            with st.container(key="wr_07"):
+                row = st.columns([1.2, 3, 1, 0.5], vertical_alignment="center", gap="small")
+            _wrow("wr_07", [1.2, 3, 1, 0.5])
             with row[0]:
                 st.markdown(f'{sparkle(20, "spkr")}&nbsp; <span class="gr-t">{C.RESUME_TITLE}</span>',
                             unsafe_allow_html=True)
@@ -521,10 +547,10 @@ def photos_home():
     if mems:
         st.markdown(f'<div class="gp-section-title" style="margin:16px 0 8px">{C.HOME_MEMORIES}</div>',
                     unsafe_allow_html=True)
-        st.markdown('<div class="gpmem-grid">', unsafe_allow_html=True)
+        mcols = st.columns(3, gap="small", vertical_alignment="top")
         for i, m in enumerate(mems):
-            _mem_card(m, i)
-        st.markdown('</div>', unsafe_allow_html=True)
+            with mcols[i % 3]:
+                _mem_card(m, i)
     # timeline
     _timeline()
 
@@ -689,10 +715,6 @@ def collections_view():
                         ' border:none;background:transparent;box-shadow:none;}'
                         '</style>', unsafe_allow_html=True)
 
-# =========================================================
-# About sheet (avatar menu)
-# =========================================================
-@st.dialog(C.ABOUT_TITLE, width="small")
 def classic_boost(text):
     frag = text.lower()
     boost = np.zeros(len(META))
@@ -818,7 +840,9 @@ def _grouped_results(res, task_id="free_classic"):
     # nudge banner (hedged / weak)
     if task_id == "free_classic" and _nudge_needed(res):
         with st.container(key="gpnudge"):
-            row = st.columns([1, 3, 1.2], vertical_alignment="center", gap="small")
+            with st.container(key="wr_08"):
+                row = st.columns([1, 3, 1.2], vertical_alignment="center", gap="small")
+            _wrow("wr_08", [1, 3, 1.2])
             with row[0]:
                 st.markdown(f'<div class="nt">{esc(C.NUDGE_TITLE)}</div>', unsafe_allow_html=True)
             with row[1]:
@@ -842,7 +866,9 @@ def _grouped_results(res, task_id="free_classic"):
     people = _group_people(res, q)
     if people:
         with st.container(key="grp_pp_head"):
-            h1, h2 = st.columns([5, 1], vertical_alignment="center", gap="small")
+            with st.container(key="wr_09"):
+                h1, h2 = st.columns([5, 1], vertical_alignment="center", gap="small")
+            _wrow("wr_09", [5, 1])
             with h1:
                 st.markdown(f'<div class="gpgroup-head" style="margin-top:6px"><span class="t">{C.GROUP_PEOPLE}</span>'
                             f'<span class="c">{esc(C.GROUP_PEOPLE_SUB)}</span></div>', unsafe_allow_html=True)
@@ -1018,7 +1044,9 @@ def search_view():
     mode = st.session_state.get("search_mode", "search")
     with st.container(key="gpsearchview"):
         # header: back + segmented toggle
-        row = st.columns([0.5, 2, 1], vertical_alignment="center", gap="small")
+        with st.container(key="wr_10"):
+            row = st.columns([0.5, 2, 1], vertical_alignment="center", gap="small")
+        _wrow("wr_10", [0.5, 2, 1])
         with row[0]:
             if iconbtn("searchback", "back", "Back", s=22, c="#444746"):
                 st.session_state["view"] = "home"
@@ -1048,7 +1076,6 @@ def search_view():
                 _grouped_results(classic_search(q, pool=False), "free_classic")
             else:
                 _grouped_results(res, "free_classic")
-            _confirm_free()
         else:
             ask_photos()
     st.markdown('<style>.st-key-gpsearchview{animation:gpslidein 250ms cubic-bezier(.2,0,0,1);}'
@@ -1066,7 +1093,9 @@ def search_view():
 
 def _search_bar_free():
     with st.container(key="searchpill_free"):
-        row = st.columns([6, 0.5, 1], vertical_alignment="center", gap="small")
+        with st.container(key="wr_11"):
+            row = st.columns([6, 0.5, 1], vertical_alignment="center", gap="small")
+        _wrow("wr_11", [6, 0.5, 1])
         with row[0]:
             st.text_input("Search your photos", key="search_q",
                           placeholder="Search for a person, place, or thing",
@@ -1092,6 +1121,15 @@ def _search_bar_free():
                 ' background:var(--gp-primary)!important;color:#fff!important;border-radius:999px!important;'
                 ' height:40px!important;min-height:40px!important;font-weight:500!important;border:none!important;}'
                 '</style>', unsafe_allow_html=True)
+
+SETTING_PRETTY = {
+    "other": "", "nature_landscape": "Nature", "party_or_event": "Party or event",
+    "hostel_or_home": "Home", "street": "Street", "beach": "Beach",
+    "cafe": "Caf\u00e9", "office": "Office", "document_or_utility": "Document",
+    "temple_or_ruins": "Temple or ruins", "transport": "Transport",
+    "restaurant": "Restaurant", "campus": "Campus",
+    "shop_or_market": "Shop or market", "classroom_or_study": "Study",
+}
 
 def _pretty_setting(s):
     s = str(s or "")
@@ -1173,9 +1211,11 @@ def _ask_idle():
         st.markdown(f'<div class="gpassub">{esc(C.ASK_SUBTITLE)}</div>', unsafe_allow_html=True)
         st.text_area("Describe the photo", key="ask_text_free", value=text, height=96,
                      placeholder=C.ASK_PLACEHOLDER, label_visibility="collapsed")
-        row = st.columns([1.4, 3, 0.5], vertical_alignment="center", gap="small")
+        with st.container(key="wr_12"):
+            row = st.columns([1.4, 3, 0.5], vertical_alignment="center", gap="small")
+        _wrow("wr_12", [1.4, 3, 0.5])
         with row[0]:
-            if st.button(C.BTN_FIND, key="ask_go", type="primary", disabled=len(text.strip()) < 3):
+            if st.button(C.BTN_FIND, key="ask_go", type="primary"):
                 _start_ask(text)
         with row[1]:
             if len(text.strip()) < 3:
@@ -1194,7 +1234,7 @@ def _ask_idle():
                     _start_ask(e)
         st.markdown('</div>', unsafe_allow_html=True)
         provider = live_llm.mode_label()
-        line = C.PRIVACY_AI.format(provider=provider) if live_llm.available() else C.PRIVACY_OFFLINE
+        line = C.PRIVACY_AI.format(provider=provider) if live_llm.live_status()["available"] else C.PRIVACY_OFFLINE
         st.markdown(f'<div class="gpasskprivacy">{esc(line)}</div>', unsafe_allow_html=True)
 
 
@@ -1248,8 +1288,10 @@ def _ask_chips(tk, session):
         with st.container(key=f"chipmenu_{tk}"):
             st.markdown(f'<div class="cm-v">{esc(_cue_value_label(c))}</div>',
                         unsafe_allow_html=True)
-            b1, b2, b3, b4, b5 = st.columns([1.2, 1, 1, 0.9, 0.5],
-                                             vertical_alignment="center", gap="small")
+            with st.container(key=f"wr_chip_{tk}"):
+                b1, b2, b3, b4, b5 = st.columns([1.2, 1, 1, 0.9, 0.5],
+                                                 vertical_alignment="center", gap="small")
+            _wrow(f"wr_chip_{tk}", [1.2, 1, 1, 0.9, 0.5])
             def _edit(action):
                 recs = []
                 for j, cc in enumerate(session.cues):
@@ -1291,7 +1333,9 @@ def _ask_chips(tk, session):
                     st.session_state.pop(f"chip_menu_{tk}", None)
                     st.rerun()
     if st.session_state.get(f"ask_undo_{tk}"):
-        u1, u2 = st.columns([0.8, 1], vertical_alignment="center")
+        with st.container(key="wr_14"):
+            u1, u2 = st.columns([0.8, 1], vertical_alignment="center")
+        _wrow("wr_14", [0.8, 1])
         with u1:
             st.markdown(f'<div class="gpundo-row">{esc(C.TOAST_UPDATED)}</div>',
                         unsafe_allow_html=True)
@@ -1403,10 +1447,7 @@ def _ask_prompt(tk, session, state):
                 pid = pair[side]
                 with c:
                     with st.container(key=f"pair_{tk}_{side}"):
-                        st.markdown(f'<div class="gppair-item">'
-                                    f'<img src="images/{pid}.jpg" alt="Candidate photo '
-                                    f'{side}" style="width:100%;height:100%;object-fit:cover">'
-                                    f'</div>', unsafe_allow_html=True)
+                        st.image(str(img_path(pid)), use_container_width=True)
                         if st.button(C.PAIR_LEFT if side == "left" else C.PAIR_RIGHT,
                                      key=f"pairb_{tk}_{side}", type="tertiary"):
                             _apply_choice(tk, session, pair, side)
@@ -1460,7 +1501,9 @@ def _ask_groups(tk, session, state, is_test=False):
             parts.append(stt)
         sub = " \u00b7 ".join(parts + [C.plural(m["size"])])
         with st.container(key=f"gpgrp_{tk}_{gi}"):
-            h1, h2 = st.columns([5, 0.45], vertical_alignment="center", gap="small")
+            with st.container(key=f"wr15_{tk}_{gi}"):
+                h1, h2 = st.columns([5, 0.45], vertical_alignment="center", gap="small")
+            _wrow(f"wr15_{tk}_{gi}", [5, 0.45])
             with h1:
                 st.markdown(f'<div class="gpgrp-head"><span class="d">{esc(C.day(m["start"]))}</span>'
                             f'<span class="s">{esc(sub)}</span></div>',
@@ -1518,7 +1561,9 @@ def _ask_bottombar(tk, state):
     fw = state.get("fallback")
     rng = C.daterange(fw["start"], fw["end"]) if fw else _ask_range(state)
     with st.container(key=f"gpbotbar_{tk}"):
-        b1, b2 = st.columns([2.4, 1.4], vertical_alignment="center", gap="small")
+        with st.container(key="wr_16"):
+            b1, b2 = st.columns([2.4, 1.4], vertical_alignment="center", gap="small")
+        _wrow("wr_16", [2.4, 1.4])
         with b1:
             lab = C.BTN_BROWSE_DATE_RANGE.format(range=rng) if rng else C.BTN_BROWSE_DATE
             if st.button(lab, key=f"browse_{tk}"):
@@ -1532,7 +1577,9 @@ def _ask_bottombar(tk, state):
 
 def _ask_active(tk, session, state, is_test=False):
     with st.container(key=f"gpaskact_{tk}"):
-        row = st.columns([0.4, 6, 0.4], vertical_alignment="center", gap="small")
+        with st.container(key="wr_17"):
+            row = st.columns([0.4, 6, 0.4], vertical_alignment="center", gap="small")
+        _wrow("wr_17", [0.4, 6, 0.4])
         with row[0]:
             if is_test:
                 st.markdown('<div class="gp-spacer"></div>', unsafe_allow_html=True)
@@ -1541,7 +1588,9 @@ def _ask_active(tk, session, state, is_test=False):
                 st.rerun()
         with row[1]:
             with st.container(key=f"asksent_{tk}"):
-                s1, s2 = st.columns([6, 0.55], vertical_alignment="center", gap="small")
+                with st.container(key="wr_18"):
+                    s1, s2 = st.columns([6, 0.55], vertical_alignment="center", gap="small")
+                _wrow("wr_18", [6, 0.55])
                 with s1:
                     st.text_input("Your description", key=f"asksent_i_{tk}",
                                   value=st.session_state.get(f"jog_text_{tk}", ""),
@@ -1618,7 +1667,11 @@ def _lb_close():
     st.session_state.pop("lightbox", None)
     st.rerun()
 
-def _lightbox_render():
+def _lb_dismiss():
+    st.session_state.pop("lightbox", None)
+
+@st.dialog("Photo", width="large", on_dismiss=_lb_dismiss)
+def _lb_dialog():
     lb = st.session_state.get("lightbox")
     if not lb or not lb.get("ids"):
         return
@@ -1632,147 +1685,159 @@ def _lightbox_render():
     row = META.loc[img_id]
     if isinstance(row, pd.DataFrame):
         row = row.iloc[0]
-    with st.dialog(C.day(row["timestamp"]), key="gplb", bind_key="Escape",
-                   on_close=lambda: st.session_state.pop("lightbox", None)):
-        with st.container(key="gplb"):
+    with st.container(key="gplb"):
+        with st.container(key="wr_19"):
             top = st.columns([0.5, 3, 0.5, 0.5, 0.5], vertical_alignment="center",
                              gap="small")
-            with top[0]:
-                if iconbtn("lbclose", "back", "Close", s=22, c="#FFFFFF"):
-                    _lb_close()
-            with top[1]:
-                st.markdown(
-                    f'<div class="gplb-pos">{esc(C.LB_POSITION.format(i=idx + 1, n=len(ids)))}</div>',
-                    unsafe_allow_html=True)
-            with top[2]:
-                if iconbtn("lbdetails", "info", C.DETAILS, s=22, c="#FFFFFF"):
-                    st.session_state["lb_details"] = not st.session_state.get("lb_details", False)
-                    st.rerun()
-            with top[3]:
-                if iconbtn("lbshare", "share", C.SHARE, s=22, c="#FFFFFF"):
-                    st.session_state["lb_share"] = f"?photo={img_id}"
-                    st.toast(C.TOAST_LINK_COPIED)
-                    st.rerun()
-            with top[4]:
-                pass
-            st.markdown('<div class="gplbimgwrap">', unsafe_allow_html=True)
-            st.image(str(img_path(img_id)), use_container_width=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-            if st.session_state.get("lb_details"):
-                place = _pretty_place(str(row.get("place_name", ""))) or "Unknown place"
-                cap = caption_of(img_id) or "\u2014"
-                sub_line = f"{place} \u00b7 {str(row.get('timestamp', ''))[:10]}"
-                st.markdown(f'<div class="gplb-details"><div>{esc(cap)}</div>'
-                            f'<div class="sub">{esc(sub_line)}</div>'
-                            f'<div class="sub">{C.DETAILS_SYNTHETIC}</div></div>',
-                            unsafe_allow_html=True)
-            if st.session_state.get("lb_share"):
-                st.markdown(
-                    f'<span class="shreq" data-url="{esc(st.session_state.pop("lb_share"))}"></span>',
-                    unsafe_allow_html=True)
-            st.markdown(SHARE_JS + LB_KB_JS, unsafe_allow_html=True)
+        _wrow("wr_19", [0.5, 3, 0.5, 0.5, 0.5])
+        with top[0]:
+            if iconbtn("lbclose", "back", "Close", s=22, c="#FFFFFF"):
+                _lb_close()
+        with top[1]:
+            st.markdown(
+                f'<div class="gplb-pos">{esc(C.LB_POSITION.format(i=idx + 1, n=len(ids)))}</div>',
+                unsafe_allow_html=True)
+        with top[2]:
+            if iconbtn("lbdetails", "info", C.DETAILS, s=22, c="#FFFFFF"):
+                st.session_state["lb_details"] = not st.session_state.get("lb_details", False)
+                st.rerun()
+        with top[3]:
+            if iconbtn("lbshare", "share", C.SHARE, s=22, c="#FFFFFF"):
+                st.session_state["lb_share"] = f"?photo={img_id}"
+                st.toast(C.TOAST_LINK_COPIED)
+                st.rerun()
+        with top[4]:
+            pass
+        st.markdown('<div class="gplbimgwrap">', unsafe_allow_html=True)
+        st.image(str(img_path(img_id)), use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
+        if st.session_state.get("lb_details"):
+            place = _pretty_place(str(row.get("place_name", ""))) or "Unknown place"
+            cap = caption_of(img_id) or "\u2014"
+            sub_line = f"{place} \u00b7 {str(row.get('timestamp', ''))[:10]}"
+            st.markdown(f'<div class="gplb-details"><div>{esc(cap)}</div>'
+                        f'<div class="sub">{esc(sub_line)}</div>'
+                        f'<div class="sub">{C.DETAILS_SYNTHETIC}</div></div>',
+                        unsafe_allow_html=True)
+        if st.session_state.get("lb_share"):
+            st.markdown(
+                f'<span class="shreq" data-url="{esc(st.session_state.pop("lb_share"))}"></span>',
+                unsafe_allow_html=True)
+        st.markdown(SHARE_JS + LB_KB_JS, unsafe_allow_html=True)
+        with st.container(key="wr_20"):
             nav = st.columns([0.5, 5, 0.5], vertical_alignment="center")
-            with nav[0]:
-                if idx > 0:
-                    if iconbtn("lbprev", "chevron_left", C.LB_PREV, s=26, c="#FFFFFF"):
-                        st.session_state["lightbox"]["idx"] = idx - 1
-                        st.rerun()
-            with nav[2]:
-                if idx < len(ids) - 1:
-                    if iconbtn("lbnxt", "chevron_right", C.LB_NEXT, s=26, c="#FFFFFF"):
-                        st.session_state["lightbox"]["idx"] = idx + 1
-                        st.rerun()
-            if ctx == "ask":
+        _wrow("wr_20", [0.5, 5, 0.5])
+        with nav[0]:
+            if idx > 0:
+                if iconbtn("lbprev", "chevron_left", C.LB_PREV, s=26, c="#FFFFFF"):
+                    st.session_state["lightbox"]["idx"] = idx - 1
+                    st.rerun()
+        with nav[2]:
+            if idx < len(ids) - 1:
+                if iconbtn("lbnxt", "chevron_right", C.LB_NEXT, s=26, c="#FFFFFF"):
+                    st.session_state["lightbox"]["idx"] = idx + 1
+                    st.rerun()
+        if ctx == "ask":
+            with st.container(key="wr_21"):
                 bar = st.columns([2.2, 2.2, 0.5], vertical_alignment="center", gap="small")
-                with bar[0]:
-                    if st.button(C.LB_THATS_IT, key="lb_thatsit", type="primary",
-                                 use_container_width=True):
-                        if is_test:
-                            st.session_state[f"confirm_img_test_{tk}"] = img_id
-                            st.session_state.pop("lightbox", None)
-                        else:
-                            log_event("jog", tk, "confirm_attempt",
-                                      {"img_id": img_id, "correct": None})
-                            secs = round(time.time() - st.session_state.get(
-                                f"ask_ts_{tk}", time.time()), 1)
-                            st.session_state["ask_success_free"] = {
-                                "img_id": img_id, "seconds": secs,
-                                "steps": st.session_state.get(f"ask_steps_{tk}", 1)}
-                            st.session_state.pop("lightbox", None)
-                        st.rerun()
-                with bar[1]:
-                    if st.button(C.LB_CLOSE_NOT_IT, key="lb_closenotit", type="secondary",
-                                 use_container_width=True):
-                        session = st.session_state.get(f"jog_{tk}")
-                        if session is not None:
-                            ts = pd.to_datetime(row["timestamp"]).to_pydatetime()
-                            session.anchor_window = (ts - timedelta(days=3),
-                                                     ts + timedelta(days=3))
-                            recs = [{"type": c.type, "value": c.value,
-                                     "certainty": c.certainty, "negated": c.negated,
-                                     "remove": False} for c in session.cues]
-                            st.session_state[f"jog_state_{tk}"] = session.edit_cues(recs)
-                            log_event("jog", tk, "anchor_set",
-                                      {"relation": "close_not_it"})
-                            _bump_steps(tk)
-                            st.toast(C.TOAST_NARROWED)
+            _wrow("wr_21", [2.2, 2.2, 0.5])
+            with bar[0]:
+                if st.button(C.LB_THATS_IT, key="lb_thatsit", type="primary",
+                             use_container_width=True):
+                    if is_test:
+                        st.session_state[f"confirm_img_test_{tk}"] = img_id
                         st.session_state.pop("lightbox", None)
-                        st.rerun()
-                with bar[2]:
-                    if iconbtn("lb_aroundbtn", "calendar", C.SEARCH_AROUND_DATE, s=20):
-                        st.session_state["anchor_img"] = img_id
-                        st.session_state["anchor_tk"] = tk
+                    else:
+                        log_event("jog", tk, "confirm_attempt",
+                                  {"img_id": img_id, "correct": None})
+                        secs = round(time.time() - st.session_state.get(
+                            f"ask_ts_{tk}", time.time()), 1)
+                        st.session_state["ask_success_free"] = {
+                            "img_id": img_id, "seconds": secs,
+                            "steps": st.session_state.get(f"ask_steps_{tk}", 1)}
                         st.session_state.pop("lightbox", None)
-                        st.rerun()
+                    st.rerun()
+            with bar[1]:
+                if st.button(C.LB_CLOSE_NOT_IT, key="lb_closenotit", type="secondary",
+                             use_container_width=True):
+                    session = st.session_state.get(f"jog_{tk}")
+                    if session is not None:
+                        ts = pd.to_datetime(row["timestamp"]).to_pydatetime()
+                        session.anchor_window = (ts - timedelta(days=3),
+                                                 ts + timedelta(days=3))
+                        recs = [{"type": c.type, "value": c.value,
+                                 "certainty": c.certainty, "negated": c.negated,
+                                 "remove": False} for c in session.cues]
+                        st.session_state[f"jog_state_{tk}"] = session.edit_cues(recs)
+                        log_event("jog", tk, "anchor_set",
+                                  {"relation": "close_not_it"})
+                        _bump_steps(tk)
+                        st.toast(C.TOAST_NARROWED)
+                    st.session_state.pop("lightbox", None)
+                    st.rerun()
+            with bar[2]:
+                if iconbtn("lb_aroundbtn", "calendar", C.SEARCH_AROUND_DATE, s=20):
+                    st.session_state["anchor_img"] = img_id
+                    st.session_state["anchor_tk"] = tk
+                    st.session_state.pop("lightbox", None)
+                    st.rerun()
 
-def _success_render():
+
+def _lightbox_render():
+    if st.session_state.get("lightbox"):
+        _lb_dialog()
+def _close_succ():
+    st.session_state.pop("ask_success_free", None)
+    st.rerun()
+
+@st.dialog("Found it", on_dismiss=_close_succ)
+def _succ_dialog():
     s = st.session_state.get("ask_success_free")
     if not s:
         return
     img_id = s["img_id"]
-
-    def _close_succ():
-        st.session_state.pop("ask_success_free", None)
-        st.rerun()
-
-    with st.dialog("Found it", key="gpsucc", on_close=_close_succ):
-        st.image(str(img_path(img_id)), use_container_width=True)
-        st.markdown(f'<div class="gpsucc-chips">'
-                    f'<span class="gchip ok">{esc(C.SUCCESS_FOUND_IN.format(t=f"{s["seconds"]:.0f} s"))}</span>'
-                    f'<span class="gchip">{esc(C.SUCCESS_STEPS.format(k=s["steps"]))}</span>'
-                    f'</div>', unsafe_allow_html=True)
+    st.image(str(img_path(img_id)), use_container_width=True)
+    st.markdown(f'<div class="gpsucc-chips">'
+                f'<span class="gchip ok">{esc(C.SUCCESS_FOUND_IN.format(t=f"{s["seconds"]:.0f} s"))}</span>'
+                f'<span class="gchip">{esc(C.SUCCESS_STEPS.format(k=s["steps"]))}</span>'
+                f'</div>', unsafe_allow_html=True)
+    with st.container(key="wr_22"):
         r1, r2 = st.columns([1.3, 1.3], vertical_alignment="center")
-        with r1:
-            if st.button(C.LB_SHARE, key="succ_share", type="secondary"):
-                st.session_state["lb_share"] = f"?photo={img_id}"
-                st.toast(C.TOAST_LINK_COPIED)
-                st.rerun()
-        with r2:
-            if st.button(C.BTN_SEARCH_ANOTHER, key="succ_next", type="tertiary"):
-                _reset_ask("free")
-                _close_succ()
-        if st.session_state.get("lb_share"):
-            st.markdown(f'<span class="shreq" data-url="{esc(st.session_state.pop("lb_share"))}"></span>',
-                        unsafe_allow_html=True)
-            st.markdown(SHARE_JS, unsafe_allow_html=True)
-        st.markdown(f'<div class="gpsucc-q">{esc(C.SUCCESS_RIGHT_PHOTO)}</div>',
+    _wrow("wr_22", [1.3, 1.3])
+    with r1:
+        if st.button(C.LB_SHARE, key="succ_share", type="secondary"):
+            st.session_state["lb_share"] = f"?photo={img_id}"
+            st.toast(C.TOAST_LINK_COPIED)
+            st.rerun()
+    with r2:
+        if st.button(C.BTN_SEARCH_ANOTHER, key="succ_next", type="tertiary"):
+            _reset_ask("free")
+            _close_succ()
+    if st.session_state.get("lb_share"):
+        st.markdown(f'<span class="shreq" data-url="{esc(st.session_state.pop("lb_share"))}"></span>',
                     unsafe_allow_html=True)
-        y1, y2 = st.columns(2, gap="small")
-        for c, right in zip((y1, y2), (True, False)):
-            with c:
-                if st.button(C.YES if right else C.NO, key=f"succ_yn_{int(right)}",
-                             use_container_width=True):
-                    log_event("jog", "free", "success_feedback",
-                              {"img_id": img_id, "right": right})
-                    st.toast(C.TOAST_THANKS)
-                    _close_succ()
-
+        st.markdown(SHARE_JS, unsafe_allow_html=True)
+    st.markdown(f'<div class="gpsucc-q">{esc(C.SUCCESS_RIGHT_PHOTO)}</div>',
+                unsafe_allow_html=True)
+    y1, y2 = st.columns(2, gap="small")
+    for c, right in zip((y1, y2), (True, False)):
+        with c:
+            if st.button(C.YES if right else C.NO, key=f"succ_yn_{int(right)}",
+                         use_container_width=True):
+                log_event("jog", "free", "success_feedback",
+                          {"img_id": img_id, "right": right})
+                st.toast(C.TOAST_THANKS)
+                _close_succ()
+def _success_render():
+    if st.session_state.get("ask_success_free"):
+        _succ_dialog()
 def _anchor_clear():
     st.session_state.pop("anchor_img", None)
     st.session_state.pop("anchor_tk", None)
     st.rerun()
 
-def _anchor_render():
+@st.dialog(C.ANCHOR_TITLE, on_dismiss=_anchor_clear)
+def _anch_dialog():
     tk = st.session_state.get("anchor_tk")
     img_id = st.session_state.get("anchor_img")
     if not tk or not img_id:
@@ -1782,57 +1847,65 @@ def _anchor_render():
         st.session_state.pop("anchor_img", None)
         st.session_state.pop("anchor_tk", None)
         return
-    with st.dialog(C.ANCHOR_TITLE, key="gpanchor", on_close=_anchor_clear):
-        with st.container(key="gpanchor"):
-            for lab, rel in ((C.ANCHOR_SAME_DAY, "same_day"), (C.ANCHOR_AFTER, "right_after"),
-                             (C.ANCHOR_BEFORE, "right_before"), (C.ANCHOR_AROUND, "around")):
-                if st.button(lab, key=f"anch_{rel}", use_container_width=True):
-                    st.session_state[f"jog_state_{tk}"] = session.set_anchor(img_id, rel)
-                    log_event("jog", tk, "anchor_set", {"relation": rel})
-                    _bump_steps(tk)
-                    _anchor_clear()
+    with st.container(key="gpanchor"):
+        for lab, rel in ((C.ANCHOR_SAME_DAY, "same_day"), (C.ANCHOR_AFTER, "right_after"),
+                         (C.ANCHOR_BEFORE, "right_before"), (C.ANCHOR_AROUND, "around")):
+            if st.button(lab, key=f"anch_{rel}", use_container_width=True):
+                st.session_state[f"jog_state_{tk}"] = session.set_anchor(img_id, rel)
+                log_event("jog", tk, "anchor_set", {"relation": rel})
+                _bump_steps(tk)
+                _anchor_clear()
+
+def _anchor_render():
+    if st.session_state.get("anchor_img") and st.session_state.get("anchor_tk"):
+        _anch_dialog()
+
+@st.dialog("Menu", on_dismiss=lambda: st.session_state.pop("avatar_menu", None))
+def _menu_dialog():
+    if st.button(C.AVATAR_MENU[0], key="am_about", use_container_width=True):
+        st.session_state.pop("avatar_menu", None)
+        st.session_state["about_open"] = "about"
+        st.rerun()
+    if st.button(C.AVATAR_MENU[1], key="am_how", use_container_width=True):
+        st.session_state.pop("avatar_menu", None)
+        st.session_state["about_open"] = "how"
+        st.rerun()
+    if st.button(C.AVATAR_MENU[2], key="am_reset", use_container_width=True):
+        _reset_all()
 
 def _avatar_menu_render():
-    if not st.session_state.get("avatar_menu"):
-        return
-    with st.dialog("Menu", key="gpavmenu",
-                   on_close=lambda: (st.session_state.pop("avatar_menu", None), st.rerun())):
-        if st.button(C.AVATAR_MENU[0], key="am_about", use_container_width=True):
-            st.session_state.pop("avatar_menu", None)
-            st.session_state["about_open"] = "about"
-            st.rerun()
-        if st.button(C.AVATAR_MENU[1], key="am_how", use_container_width=True):
-            st.session_state.pop("avatar_menu", None)
-            st.session_state["about_open"] = "how"
-            st.rerun()
-        if st.button(C.AVATAR_MENU[2], key="am_reset", use_container_width=True):
-            _reset_all()
+    if st.session_state.get("avatar_menu"):
+        _menu_dialog()
+
+def _about_dismiss():
+    st.session_state.pop("about_open", None)
+
+@st.dialog(C.HOW_TITLE, on_dismiss=_about_dismiss)
+def _how_dialog():
+    for pt in C.HOW_POINTS:
+        st.markdown(f'<div class="gp-body-sm" style="margin:8px 0">&bull; '
+                    f'{esc(pt)}</div>', unsafe_allow_html=True)
+
+@st.dialog(C.ABOUT_TITLE, on_dismiss=_about_dismiss)
+def _about_dialog():
+    provider = live_llm.mode_label()
+    st.markdown(f'<div class="gp-body-sm">{esc(C.ABOUT_TEXT)}</div>',
+                unsafe_allow_html=True)
+    st.markdown(f'<div class="gp-caption" style="margin-top:10px">'
+                f'{esc(C.PROVIDER_LINE.format(provider=esc(provider)))}</div>',
+                unsafe_allow_html=True)
+    st.markdown(f'<div class="gp-caption" style="margin-top:6px">'
+                f'{esc(C.LICENSE_NOTE)}</div>', unsafe_allow_html=True)
+    if st.button(C.BTN_START_OVER, type="secondary"):
+        _reset_all()
 
 def _about_render():
     which = st.session_state.get("about_open")
-    if not which:
-        return
-    provider = live_llm.mode_label()
     if which == "how":
-        with st.dialog(C.HOW_TITLE, key="aboutdlg_how",
-                       on_close=lambda: (st.session_state.pop("about_open", None),
-                                         st.rerun())):
-            for pt in C.HOW_POINTS:
-                st.markdown(f'<div class="gp-body-sm" style="margin:8px 0">&bull; '
-                            f'{esc(pt)}</div>', unsafe_allow_html=True)
-    else:
-        with st.dialog(C.ABOUT_TITLE, key="aboutdlg_about",
-                       on_close=lambda: (st.session_state.pop("about_open", None),
-                                         st.rerun())):
-            st.markdown(f'<div class="gp-body-sm">{esc(C.ABOUT_TEXT)}</div>',
-                        unsafe_allow_html=True)
-            st.markdown(f'<div class="gp-caption" style="margin-top:10px">'
-                        f'{esc(C.PROVIDER_LINE.format(provider=esc(provider)))}</div>',
-                        unsafe_allow_html=True)
-            st.markdown(f'<div class="gp-caption" style="margin-top:6px">'
-                        f'{esc(C.LICENSE_NOTE)}</div>', unsafe_allow_html=True)
-            if st.button(C.BTN_START_OVER, type="secondary"):
-                _reset_all()
+        _how_dialog()
+    elif which:
+        _about_dialog()
+
 # =========================================================
 # Test mode (?test=1) + admin (?admin=1) — contract-locked
 # =========================================================
@@ -1930,43 +2003,57 @@ def _end_task(item, outcome):
     st.session_state["test_phase"] = "post"
     st.rerun()
 
-def _test_confirm(item):
+def _tcfm_dismiss():
+    q = st.session_state.get("test_queue") or []
+    pos = st.session_state.get("test_pos", 0)
+    try:
+        tid = q[pos]["task"]["id"]
+    except Exception:  # noqa: BLE001
+        return
+    st.session_state.pop(f"confirm_img_test_{tid}", None)
+
+@st.dialog(C.TM_CONFIRM_TITLE, on_dismiss=_tcfm_dismiss)
+def _tcfm_dialog():
+    q = st.session_state.get("test_queue") or []
+    pos = st.session_state.get("test_pos", 0)
+    if pos >= len(q):
+        return
+    item = q[pos]
     tid = item["task"]["id"]
     img_id = st.session_state.get(f"confirm_img_test_{tid}")
     if not img_id or img_id not in META.index:
         return
-
-    def _dismiss():
-        st.session_state.pop(f"confirm_img_test_{tid}", None)
-        st.rerun()
-
-    with st.dialog(C.TM_CONFIRM_TITLE, key=f"tcfm_{tid}", on_close=_dismiss):
-        st.image(str(img_path(img_id)), use_container_width=True)
-        st.markdown(f'<div class="gp-body-sm" style="margin-top:8px">'
-                    f'{esc(caption_of(img_id) or "")} \u00b7 {esc(date_of(img_id))}</div>',
-                    unsafe_allow_html=True)
-        st.caption(C.TM_CONFIRM_SUB)
-        y1, y2 = st.columns(2, gap="small")
-        with y1:
-            if st.button(C.YES, key=f"tcfm_yes_{tid}", type="primary",
-                         use_container_width=True):
-                correct = img_id == item["task"]["target_img_id"]
-                log_event(item["mode"], tid, "confirm_attempt",
-                          {"img_id": img_id, "correct": correct})
-                if correct:
-                    _end_task(item, "success")
+    st.image(str(img_path(img_id)), use_container_width=True)
+    st.markdown(f'<div class="gp-body-sm" style="margin-top:8px">'
+                f'{esc(caption_of(img_id) or "")} \u00b7 {esc(date_of(img_id))}</div>',
+                unsafe_allow_html=True)
+    st.caption(C.TM_CONFIRM_SUB)
+    y1, y2 = st.columns(2, gap="small")
+    with y1:
+        if st.button(C.YES, key=f"tcfm_yes_{tid}", type="primary",
+                     use_container_width=True):
+            correct = img_id == item["task"]["target_img_id"]
+            log_event(item["mode"], tid, "confirm_attempt",
+                      {"img_id": img_id, "correct": correct})
+            if correct:
+                _end_task(item, "success")
+            else:
+                wrong = st.session_state.get(f"task_wrong_{tid}", 0) + 1
+                st.session_state[f"task_wrong_{tid}"] = wrong
+                st.session_state.pop(f"confirm_img_test_{tid}", None)
+                if wrong >= 3:
+                    _end_task(item, "fail")
                 else:
-                    wrong = st.session_state.get(f"task_wrong_{tid}", 0) + 1
-                    st.session_state[f"task_wrong_{tid}"] = wrong
-                    st.session_state.pop(f"confirm_img_test_{tid}", None)
-                    if wrong >= 3:
-                        _end_task(item, "fail")
-                    else:
-                        st.toast(C.TM_KEEP_LOOKING)
-                        st.rerun()
-        with y2:
-            if st.button(C.NO, key=f"tcfm_no_{tid}", use_container_width=True):
-                _dismiss()
+                    st.toast(C.TM_KEEP_LOOKING)
+                    st.rerun()
+    with y2:
+        if st.button(C.NO, key=f"tcfm_no_{tid}", use_container_width=True):
+            st.session_state.pop(f"confirm_img_test_{tid}", None)
+            st.rerun()
+
+def _test_confirm(item):
+    if st.session_state.get(f"confirm_img_test_{item['task']['id']}"):
+        _tcfm_dialog()
 
 def classic_task_ui(item):
     t = item["task"]
@@ -2160,3 +2247,4 @@ except Exception as e:  # noqa: BLE001
     except Exception:  # noqa: BLE001
         pass
     st.error(C.ERROR_FATAL)
+
