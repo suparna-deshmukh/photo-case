@@ -62,7 +62,8 @@ def restart_jog():
     logf = open(BASE / "logs" / "streamlit_jog_8502_final.log", "a")
     proc = subprocess.Popen(
         [PY, "-m", "streamlit", "run", "app.py",
-         "--server.headless", "true", "--server.port", "8502"],
+         "--server.headless", "true", "--server.port", "8502",
+         "--server.fileWatcherType", "none"],
         cwd=str(BASE / "space_jog"), env=env,
         stdout=logf, stderr=subprocess.STDOUT, start_new_session=True)
     time.sleep(25)

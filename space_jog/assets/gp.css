@@ -229,8 +229,12 @@ header[data-testid="stHeader"] {display: none;}
 .gpmem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 4px 0 10px; }
 [class*="st-key-memcard_"] { position: relative; border-radius: 16px; overflow: hidden;
   aspect-ratio: 140 / 186; background: var(--gp-surface-container-high); margin: 0; }
+[class*="st-key-memcard_"] > [data-testid="stElementContainer"]:has([data-testid="stFullScreenFrame"]) { position: absolute; inset: 0; height: 100%; min-height: 0; }
+[class*="st-key-memcard_"] [data-testid="stFullScreenFrame"],
+[class*="st-key-memcard_"] [data-testid="stFullScreenFrame"] > div { height: 100%; min-height: 0; }
 [class*="st-key-memcard_"] [data-testid="stImage"] { width: 100%; height: 100%; margin: 0; padding: 0; display: block; overflow: hidden; }
-[class*="st-key-memcard_"] [data-testid="stImage"] img { width: 100%; height: 100%; object-fit: cover; display: block; }
+[class*="st-key-memcard_"] [data-testid="stImage"] [data-testid="stImageContainer"] { width: 100% !important; height: 100% !important; }
+[class*="st-key-memcard_"] [data-testid="stImage"] img { width: 100% !important; height: 100% !important; object-fit: cover; display: block; }
 [class*="st-key-memcard_"] .gpmem-scrim { position: absolute; inset: 0;
   background: linear-gradient(180deg, transparent 45%, rgba(0,0,0,.72)); }
 [class*="st-key-memcard_"] .gpmem-meta { position: absolute; left: 10px; right: 10px; bottom: 8px; color: #fff; }
@@ -604,6 +608,25 @@ header[data-testid="stHeader"] {display: none;}
 @media (min-width: 900px) {
   .st-key-gpmain { margin-left: 256px; width: calc(100% - 256px); min-width: 0; }
 }
+/* content sits close under the sticky top bar (no dead gap) */
+.stMain [data-testid="stMainBlockContainer"] { padding-top: 14px !important; }
+@media (min-width: 900px) {
+  .stMain [data-testid="stMainBlockContainer"] { padding-bottom: 40px !important; }
+}
+/* ask session header (back arrow): desktop only; phone keeps the search-view back row */
+@media (max-width: 899px) { [class*="st-key-gpaskhdr_"] { display: none !important; } }
+/* chip correction menu: compact card, pill actions */
+[class*="st-key-chipmenu_"] { max-width: 560px; background: var(--gp-surface-container);
+  border-radius: 16px; padding: 10px 14px 12px; margin: 8px 0 12px; }
+[class*="st-key-chipmenu_"] .cm-v { font-size: 15px; font-weight: 500; color: var(--gp-on-surface);
+  margin: 0 0 8px; }
+[class*="st-key-chipmenu_"] [data-testid="stButton"] > button {
+  border-radius: 999px !important; height: 34px !important; min-height: 34px !important;
+  font-size: 13px !important; font-weight: 500 !important; background: var(--gp-surface) !important;
+  color: var(--gp-on-surface) !important; border: 1px solid var(--gp-outline-variant) !important;
+  padding: 0 12px !important; }
+[class*="st-key-chipmenu_"] [data-testid="stButton"] > button:hover {
+  background: var(--gp-primary-container) !important; }
 /* floating pill nav (phone only) */
 .st-key-gpfloat { display: none; }
 @media (max-width: 899px) {
@@ -624,13 +647,19 @@ header[data-testid="stHeader"] {display: none;}
     color: var(--gp-on-surface-variant) !important; padding: 0 10px !important;
     display: inline-flex !important; align-items: center !important; justify-content: center !important;
   }
-  .st-key-gpaskbtn { padding: 0; margin: 0; }
+  .st-key-gpaskbtn { padding: 0; margin: 0; position: relative; width: 56px; max-width: none;
+    height: 56px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .st-key-gpaskbtn > [data-testid="stElementContainer"] { position: static !important; margin: 0 !important; }
+  .st-key-gpaskbtn .stMarkdown, .st-key-gpaskbtn .stMarkdownContainer { margin: 0 !important; }
+  .st-key-gpaskbtn .gpaskbtn-in { width: 56px; height: 56px; display: flex; align-items: center;
+    justify-content: center; pointer-events: none; }
+  .st-key-gpaskbtn [data-testid="stButton"] { position: absolute !important; inset: 0 !important; margin: 0 !important; z-index: 3; }
   .st-key-gpaskbtn [data-testid="stButton"] > button {
     font-size: 0 !important; line-height: 0; color: transparent;
     width: 56px !important; height: 56px !important; min-height: 56px !important;
     border-radius: 50% !important; background: var(--gp-surface) !important;
     border: 1px solid rgba(0,0,0,.08) !important; box-shadow: var(--gp-elev3) !important;
-    padding: 0 !important; margin: 0 6px;
+    padding: 0 !important; margin: 0;
     display: inline-flex !important; align-items: center !important; justify-content: center !important;
   }
   .st-key-gpaskbtn [data-testid="stButton"] > button:hover {
@@ -650,12 +679,21 @@ header[data-testid="stHeader"] {display: none;}
 [class*="st-key-pcell_"] { position: relative; padding: 0 !important; margin: 0 !important;
   aspect-ratio: 1; border-radius: var(--gp-radius-photo); overflow: hidden;
   background: var(--gp-surface-container-high); }
+/* image fills the whole tile (no grey gap under the photo) */
+[class*="st-key-pcell_"] > [data-testid="stElementContainer"]:has([data-testid="stFullScreenFrame"]) {
+  position: absolute; inset: 0; }
+[class*="st-key-pcell_"] [data-testid="stFullScreenFrame"],
+[class*="st-key-pcell_"] [data-testid="stFullScreenFrame"] > div { height: 100%; min-height: 0; }
+[class*="st-key-pcell_"] [data-testid="stImage"] [data-testid="stImageContainer"] {
+  width: 100% !important; height: 100% !important; }
+[class*="st-key-pcell_"] [data-testid="stImage"] img { width: 100% !important; height: 100% !important; }
 @media (max-width: 899px) { [class*="st-key-pcell_"] { border-radius: 6px; } }
 [class*="st-key-pcell_"] [data-testid="stImage"] { width: 100%; height: 100%; margin: 0; padding: 0; display: block; overflow: hidden; }
-[class*="st-key-pcell_"] [data-testid="stImage"] img { width: 100%; height: 100%; object-fit: cover; display: block; }
 [class*="st-key-pcell_"]:hover { z-index: 2; box-shadow: var(--gp-elev3); }
 [class*="st-key-pcell_"]:hover [data-testid="stImage"] img { filter: brightness(1.05); }
 [class*="st-key-pcellb_"] { position: absolute; inset: 0; z-index: 5; margin: 0; }
+[class*="st-key-pcellb_"] > [data-testid="stElementContainer"] { position: static !important; margin: 0 !important; width: 100% !important; height: 100% !important; }
+[class*="st-key-pcellb_"] [data-testid="stButton"] { position: absolute; inset: 0; margin: 0; }
 [class*="st-key-pcellb_"] [data-testid="stButton"] > button {
   position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%;
   border: none !important; box-shadow: none !important; padding: 0 !important;
@@ -877,4 +915,18 @@ html, body { overflow-x: hidden; }
   [class*="st-key-pair_"] [data-testid="stImage"] { border-radius: 16px; overflow: hidden; margin: 0; }
   [class*="st-key-pair_"] [data-testid="stImage"] img {
     width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+}
+
+/* ============ click-layer anchoring (global fix) ============
+   Streamlit 1.65 wraps every widget in a position:relative stElementContainer
+   that collapses to height 0. Absolutely positioned stButton overlays (inset:0)
+   anchor to that 0px box, shrinking the clickable area to a sliver.
+   Making those wrappers static re-anchors overlays to the keyed container. */
+[class*="st-key-chip_"] > [data-testid="stElementContainer"],
+[class*="st-key-qopt_"] > [data-testid="stElementContainer"],
+[class*="st-key-pair_"] > [data-testid="stElementContainer"],
+[class*="st-key-daychip_"] > [data-testid="stElementContainer"],
+[class*="st-key-memcard_"] > [data-testid="stElementContainer"]:not(:has([data-testid="stFullScreenFrame"])),
+[class*="st-key-pcell_"] > [data-testid="stElementContainer"]:not(:has([data-testid="stFullScreenFrame"])) {
+  position: static !important; margin: 0 !important;
 }

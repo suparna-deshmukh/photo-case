@@ -43,6 +43,14 @@ def _sparkle_uri(s=24):
 def _pinwheel_uri(s=26):
     return "data:image/svg+xml;utf8," + pinwheel(s).replace('"', "'").replace("#", "%23")
 
+def _avatar_uri():
+    import urllib.parse
+    svg = ('<svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">'
+           '<circle cx="16" cy="16" r="16" fill="#D3E3FD"/>'
+           '<text x="16" y="21" font-size="14" font-weight="600" text-anchor="middle" '
+           'fill="#041E49" font-family="sans-serif">D</text></svg>')
+    return "data:image/svg+xml," + urllib.parse.quote(svg, safe="")
+
 def _wrow(key, weights):
     """Restore weighted column proportions on mobile (<900px), where Streamlit 1.65
     mis-resolves percentage flex-basis and stacks columns."""
@@ -54,15 +62,35 @@ def _wrow(key, weights):
 
 
 def iconbtn(key, name, label, s=24, c="#444746", kind="default", svg=None):
-    """Icon-only button: accessible name = label (never visible), 40px circle.
-    kind: default | tonal | back (44px)."""
-    uri = svg if svg else _svg_uri(name, s, c)
+    """Icon-only button: inline SVG (always paints) under an invisible full-size button.
+    Accessible name = label (never visible). svg may be raw SVG or a data-URI image."""
+    if svg is None:
+        mark = icon(name, s, c)
+    elif svg.startswith("<"):
+        mark = svg
+    else:
+        mark = (f'<div style="width:{s}px;height:{s}px;flex:0 0 auto;'
+                f"background:url('{svg}') center/contain no-repeat\"></div>")
     with st.container(key=f"ic_{key}"):
+        st.markdown(f'<div class="gpiconbox">{mark}</div>', unsafe_allow_html=True)
         pressed = st.button(label, key=f"icb_{key}")
-    st.markdown(f"<style>[data-testid='stElement'][class*='icb_{key}'] [data-testid='stButton'] > button::before "
-                f"{{ content:''; width:{s}px; height:{s}px; display:block; "
-                f"background:url(\"{uri}\") center/contain no-repeat; }}</style>",
-                unsafe_allow_html=True)
+    st.markdown(f"<style>"
+                f"[class*='st-key-ic_{key}']{{position:relative!important;width:40px!important;max-width:none!important;"
+                f"min-width:40px!important;height:40px!important;flex:0 0 auto!important;margin:0!important;"
+                f"padding:0!important;display:flex!important;flex-direction:column!important;"
+                f"align-items:center!important;justify-content:center!important;}}"
+                f"[class*='st-key-ic_{key}'] > [data-testid='stElementContainer']{{position:static!important;"
+                f"margin:0!important;display:flex!important;align-items:center!important;justify-content:center!important;"
+                f"width:100%!important;height:auto!important;}}"
+                f"[class*='st-key-ic_{key}'] .stMarkdown{{margin:0!important;}}"
+                f"[class*='st-key-ic_{key}'] .stMarkdownContainer{{margin:0!important;}}"
+                f"[class*='st-key-ic_{key}'] .gpiconbox{{position:static!important;display:flex!important;"
+                f"align-items:center!important;justify-content:center!important;width:40px;height:40px;"
+                f"pointer-events:none;}}"
+                f"[class*='st-key-ic_{key}'] [data-testid='stButton']{{position:absolute!important;inset:0!important;"
+                f"margin:0!important;z-index:2;}}"
+                f"[class*='st-key-ic_{key}'] [data-testid='stButton'] > button{{width:100%!important;height:100%!important;}}"
+                f"</style>", unsafe_allow_html=True)
     return pressed
 
 # ---------------- data bundle (loaded once) ----------------
@@ -127,7 +155,7 @@ def person_avatar(pid):
     p = next((x for x in PERSONS if x["id"] == pid), None)
     if not p:
         return None
-    ap = BASE / "data" / p.get("avatar", "")
+    ap = BASE / "data" / "faces" / p.get("avatar", "")
     return str(ap) if ap.exists() else None
 
 # ---------------- logging (contract-locked) ----------------
@@ -154,8 +182,7 @@ if (mr && !mr.dataset.done) {
   rec.onresult = (e) => {
     const t = e.results[0][0].transcript;
     const tgt = mr.dataset.target;
-    const sel = tgt === 'pill' ? 'input[aria-label="Search Google Photos"]'
-               : tgt === 'search' ? 'input[aria-label="Search your photos"]' : 'textarea';
+    const sel = tgt === 'pill' ? 'input[aria-label="Search your photos"]' : 'textarea';
     const inp = document.querySelector(sel);
     if (inp) { inp.value = t;
                inp.dispatchEvent(new Event('input', {bubbles:true}));
@@ -195,8 +222,20 @@ def _pill_submitted():
         return
     st.session_state["search_q"] = q
     st.session_state["view"] = "search"
+    if st.session_state.get("search_mode") == "ask":
+        st.session_state["guided_prefill"] = q
+        st.session_state["ask_autostart"] = True
+    else:
+        st.session_state["search_mode"] = "search"
+        _classic_go("free_classic", "pill_q")
+
+def _pill_search_open():
+    st.session_state["pill_q"] = ""
+    st.session_state["search_q"] = ""
+    st.session_state.pop("classic_res_free_classic", None)
+    st.session_state["view"] = "search"
     st.session_state["search_mode"] = "search"
-    _classic_go("free_classic", "pill_q")
+    st.rerun()
 
 def _ask_from_pill():
     st.session_state["view"] = "search"
@@ -205,71 +244,86 @@ def _ask_from_pill():
 def desktop_bar():
     with st.container(key="gptop"):
         with st.container(key="wr_01"):
-            row = st.columns([0.8, 2.4, 0.6], vertical_alignment="center", gap="small")
-        _wrow("wr_01", [0.8, 2.4, 0.6])
+            row = st.columns([6, 0.6], vertical_alignment="center", gap="small")
+        _wrow("wr_01", [6, 0.6])
         with row[0]:
-            st.markdown(f'<div class="gptb-brand">{pinwheel(26)}<span>Photos</span></div>',
-                        unsafe_allow_html=True)
-        with row[1]:
             with st.container(key="gpsearchpill"):
                 with st.container(key="wr_02"):
-                    i_a, i_b, i_c, i_d = st.columns([0.4, 6, 0.35, 1.15],
+                    i_a, i_b, i_c, i_d = st.columns([0.5, 5.5, 0.6, 1.3],
                                                     vertical_alignment="center", gap="small")
-                _wrow("wr_02", [0.4, 6, 0.35, 1.15])
+                _wrow("wr_02", [0.5, 5.5, 0.6, 1.3])
                 with i_a:
-                    st.markdown(f'<div class="gpp-searchicon">{icon("search", 20, "#444746")}</div>',
-                                unsafe_allow_html=True)
+                    if iconbtn("pill_search_open", "search", "Search", s=20, c="#444746"):
+                        _pill_search_open()
                 with i_b:
                     st.text_input(C.SEARCH_PLACEHOLDER, key="pill_q",
                                   label_visibility="collapsed", placeholder=C.SEARCH_PLACEHOLDER,
                                   on_change=_pill_submitted)
-                with i_b:
+                with i_c:
                     iconbtn("pill_mic", "mic", "Voice search", s=22, c="#444746")
                     if st.session_state.get("mic_pill_pending"):
                         st.session_state.pop("mic_pill_pending", None)
                         _mic_mark("pill")
-                with i_c:
-                    st.button(C.ASK, key="pill_ask_chip", on_click=_ask_from_pill)
-        with row[2]:
+                with i_d:
+                    with st.container(key="gpaskchip"):
+                        st.markdown(f'<div class="gpaskchip">{sparkle(16, "spchip")}<span>{esc(C.ASK)}</span></div>',
+                                    unsafe_allow_html=True)
+                        st.button(C.ASK, key="pill_ask_chip", on_click=_ask_from_pill)
+        with row[1]:
             with st.container(key="gpavatarbtn"):
-                avatar_svg = ('<svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">'
-                              '<circle cx="16" cy="16" r="16" fill="#D3E3FD"/>'
-                              '<text x="16" y="21" font-size="14" font-weight="600" text-anchor="middle" '
-                              'fill="#041E49" font-family="sans-serif">D</text></svg>')
-                if iconbtn("avatar", "person", "Menu", s=30, svg=avatar_svg):
+                if iconbtn("avatar", "person", "Menu", s=30, svg=_avatar_uri()):
                     st.session_state["avatar_menu"] = True
                     st.rerun()
+    st.markdown(MIC_JS, unsafe_allow_html=True)
     st.markdown('<style>'
                 '.st-key-gptop { position:sticky; top:0; z-index:50; background:var(--gp-surface);'
-                ' border-bottom:1px solid var(--gp-divider); padding:8px 24px; margin:0; }'
+                ' border-bottom:1px solid var(--gp-divider); padding:8px 24px; margin:0 0 0 256px;'
+                ' width:calc(100% - 256px); box-sizing:border-box; }'
                 '.st-key-gptop [data-testid="stHorizontalBlock"]{align-items:center; gap:16px;}'
                 '.st-key-gptop > [data-testid="stVerticalBlock"]{padding:0;margin:0;}'
                 '.st-key-gpsearchpill > [data-testid="stHorizontalBlock"]{gap:2px; align-items:center;}'
                 '.st-key-gpsearchpill, .st-key-gpsearchpill [data-testid="stVerticalBlock"]{padding:0;margin:0;}'
-                '.st-key-gpsearchpill [data-testid="stHorizontalBlock"]{width:100%; max-width:720px; height:48px;'
-                ' background:var(--gp-surface-container-high); border:2px solid transparent; border-radius:999px;'
-                ' padding:0 8px; transition:all 250ms cubic-bezier(.2,0,0,1);}'
+                '.st-key-gpsearchpill [data-testid="stHorizontalBlock"]{width:100%; max-width:720px; height:48px !important; min-height:0; flex:0 0 48px !important; overflow:hidden;'
+                ' box-sizing:border-box; background:var(--gp-surface-container-high); border:2px solid transparent; border-radius:999px;'
+                ' padding:0 10px 0 4px; transition:all 250ms cubic-bezier(.2,0,0,1);}'
+                '.st-key-gpsearchpill [data-testid="stHorizontalBlock"] > div{height:48px; min-height:0; display:flex;'
+                ' flex-direction:column; justify-content:center;}'
                 '.st-key-gpsearchpill [data-testid="stHorizontalBlock"]:focus-within{'
                 ' background:var(--gp-surface); border-color:var(--gp-primary); box-shadow:var(--gp-elev1);}'
                 '.st-key-gpsearchpill [data-testid="stVerticalBlock"]{padding:0;margin:0;}'
                 '.st-key-gpsearchpill input{background:transparent!important;border:none!important;box-shadow:none!important;'
                 ' font-size:16px!important;color:var(--gp-on-surface)!important;padding:0 4px!important;height:40px!important;}'
                 '.st-key-gpsearchpill input::placeholder{color:var(--gp-on-surface-variant);opacity:1;}'
-                '.st-key-pill_ask_chip [data-testid="stButton"] > button{'
-                ' border-radius:999px!important;height:36px!important;min-height:36px!important;padding:0 14px!important;'
-                ' font-size:14px!important;font-weight:500!important;background:var(--gp-surface)!important;'
-                ' color:var(--gp-on-primary-container)!important;border:1px solid var(--gp-outline-variant)!important;'
-                ' display:inline-flex!important;align-items:center!important;gap:6px;}'
-                '.st-key-pill_ask_chip [data-testid="stButton"] > button:hover{background:var(--gp-primary-container)!important;}'
+                '.st-key-gpaskchip{position:relative!important;display:inline-flex!important;align-items:center!important;'
+                'justify-content:center!important;height:36px!important;max-width:none!important;margin:0!important;padding:0!important;}'
+                '.st-key-gpaskchip > [data-testid="stElementContainer"]{position:static!important;margin:0!important;}'
+                '.st-key-gpaskchip .gpaskchip{display:inline-flex;align-items:center;gap:6px;height:36px;'
+                ' padding:0 14px 0 10px;border-radius:999px;background:var(--gp-surface);'
+                ' border:1px solid var(--gp-outline-variant);color:var(--gp-on-primary-container);'
+                ' font-size:14px;font-weight:500;cursor:pointer;}'
+                '.st-key-gpaskchip [data-testid="stButton"]{position:absolute!important;inset:0!important;margin:0!important;z-index:2;}'
+                '.st-key-gpaskchip [data-testid="stButton"] > button{opacity:0;width:100%;height:100%;border:none;'
+                ' background:transparent;box-shadow:none;font-size:0;padding:0;border-radius:999px;}'
+                '.st-key-gpaskchip:hover .gpaskchip{background:var(--gp-primary-container);}'
                 '</style>', unsafe_allow_html=True)
 
 def sidebar():
     view = st.session_state.get("view", "home")
     with st.container(key="gpsidebar"):
-        st.markdown('<style>.st-key-gpsidebar [data-testid="stVerticalBlock"]{gap:2px!important;padding:0!important;margin:0!important;width:100%!important;}.st-key-gpsidebar [data-testid="stVerticalBlock"] > div{width:100%!important;}</style>',
-                    unsafe_allow_html=True)
-        with st.container(key=f"navitem_photos"):
-            if st.button(C.NAV_PHOTOS, key="nav_photos", use_container_width=True):
+        st.markdown('<style>.st-key-gpsidebar [data-testid="stVerticalBlock"]{gap:2px!important;padding:0!important;margin:0!important;width:100%!important;}'
+                    '.st-key-gpsidebar [data-testid="stVerticalBlock"] > div{width:100%!important;}'
+                    '.st-key-gpsidebrand{position:relative;padding:8px 12px 8px;margin:0 0 4px;}'
+                    '.st-key-gpsidebrand .gptb-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:500;color:var(--gp-on-surface);}'
+                    '.st-key-gpsidebrand .gptb-brand.on{color:var(--gp-primary);}'
+                    '.st-key-gpsidebrand [data-testid="stButton"]{position:absolute;inset:0;margin:0;}'
+                    '.st-key-gpsidebrand [data-testid="stButton"] > button{opacity:0;width:100%;height:100%;border:none;'
+                    ' background:transparent;box-shadow:none;border-radius:999px;}'
+                    '.st-key-gpsidebrand [data-testid="stButton"] > button:hover{background:var(--gp-surface-container)!important;}'
+                    '</style>', unsafe_allow_html=True)
+        with st.container(key="gpsidebrand"):
+            st.markdown(f'<div class="gptb-brand{" on" if view == "home" else ""}">{pinwheel(26)}<span>Photos</span></div>',
+                        unsafe_allow_html=True)
+            if st.button(C.NAV_PHOTOS, key="nav_photos", type="tertiary"):
                 st.session_state["view"] = "home"
                 st.rerun()
         with st.container(key=f"navitem_coll"):
@@ -314,11 +368,7 @@ def mobile_top():
             st.markdown(f'<div class="gptb-brand">{pinwheel(24)}<span>Photos</span></div>',
                         unsafe_allow_html=True)
         with row[1]:
-            avatar_svg = ('<svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">'
-                          '<circle cx="16" cy="16" r="16" fill="#D3E3FD"/>'
-                          '<text x="16" y="21" font-size="14" font-weight="600" text-anchor="middle" '
-                          'fill="#041E49" font-family="sans-serif">D</text></svg>')
-            if iconbtn("mtopavatar", "person", "Menu", s=30, svg=avatar_svg):
+            if iconbtn("mtopavatar", "person", "Menu", s=30, svg=_avatar_uri()):
                 st.session_state["avatar_menu"] = True
                 st.rerun()
 
@@ -341,16 +391,9 @@ def float_nav():
                     st.rerun()
         with row[2]:
             with st.container(key="gpaskbtn"):
-                svg_ask = ('<svg viewBox="0 0 24 24" width="26" height="26">'
-                           '<path fill="#444746" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 '
-                           '16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 '
-                           '4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 '
-                           '9.5 14z"/></svg>')
+                st.markdown(f'<div class="gpaskbtn-in">{icon("search", 24, "#444746")}</div>',
+                            unsafe_allow_html=True)
                 st.button("Ask Photos", key="fnav_ask", on_click=_fnav_ask_click)
-            st.markdown('<style>[data-testid=\'stElement\'][class*="fnav_ask"] [data-testid="stButton"] > button::before '
-                         '{ content:""; width:26px; height:26px; display:block; '
-                         + f"background:url(\"{svg_ask.replace(chr(34), chr(39))}\") center/contain no-repeat;"
-                         + ' }</style>', unsafe_allow_html=True)
         with row[3]:
             pass
     active_p = "navpill_photos" if view == "home" else ""
@@ -1043,29 +1086,11 @@ def _build_tag_panel():
 def search_view():
     mode = st.session_state.get("search_mode", "search")
     with st.container(key="gpsearchview"):
-        # header: back + segmented toggle
-        with st.container(key="wr_10"):
-            row = st.columns([0.5, 2, 1], vertical_alignment="center", gap="small")
-        _wrow("wr_10", [0.5, 2, 1])
-        with row[0]:
+        with st.container(key="searchbackrow"):
             if iconbtn("searchback", "back", "Back", s=22, c="#444746"):
                 st.session_state["view"] = "home"
                 st.rerun()
-        with row[1]:
-            with st.container(key="gpseg"):
-                c1, c2 = st.columns(2, gap="small", vertical_alignment="center")
-                with c1:
-                    if st.button(C.TOGGLE_SEARCH, key="seg_search"):
-                        st.session_state["search_mode"] = "search"
-                        st.rerun()
-                with c2:
-                    if st.button(C.TOGGLE_ASK, key="seg_ask"):
-                        st.session_state["search_mode"] = "ask"
-                        st.rerun()
-        with row[2]:
-            pass
         if mode == "search":
-            _search_bar_free()
             res = st.session_state.get("classic_res_free_classic")
             q = (st.session_state.get("search_q") or "").strip()
             if res is None and not q:
@@ -1080,47 +1105,13 @@ def search_view():
             ask_photos()
     st.markdown('<style>.st-key-gpsearchview{animation:gpslidein 250ms cubic-bezier(.2,0,0,1);}'
                 '@keyframes gpslidein{from{transform:translateX(24px);opacity:.4}to{transform:none;opacity:1}}'
-                '.st-key-gpseg{display:inline-flex;background:var(--gp-surface-container-high);border-radius:999px;'
-                ' padding:3px;gap:2px;}'
-                '.st-key-gpseg [data-testid="stButton"] > button{border-radius:999px!important;height:36px!important;'
-                ' min-height:36px!important;padding:0 20px!important;font-size:14px!important;font-weight:500!important;'
-                ' background:transparent!important;color:var(--gp-on-surface-variant)!important;border:none!important;}'
-                + ('.st-key-seg_search [data-testid="stButton"] > button' if mode == "search"
-                   else '.st-key-seg_ask [data-testid="stButton"] > button')
-                + '{background:var(--gp-surface)!important;color:var(--gp-on-surface)!important;'
-                ' box-shadow:var(--gp-elev1)!important;}'
-                '</style>', unsafe_allow_html=True)
-
-def _search_bar_free():
-    with st.container(key="searchpill_free"):
-        with st.container(key="wr_11"):
-            row = st.columns([6, 0.5, 1], vertical_alignment="center", gap="small")
-        _wrow("wr_11", [6, 0.5, 1])
-        with row[0]:
-            st.text_input("Search your photos", key="search_q",
-                          placeholder="Search for a person, place, or thing",
-                          label_visibility="collapsed")
-        with row[1]:
-            if iconbtn("mic_free", "mic", "Voice search", s=22):
-                _mic_mark("search")
-        with row[2]:
-            if st.button(C.BTN_SEARCH, key="classic_go_free", type="primary"):
-                _classic_go("free_classic", "search_q")
-        st.markdown(MIC_JS, unsafe_allow_html=True)
-    st.markdown('<style>.st-key-searchpill_free [data-testid="stHorizontalBlock"]{'
-                ' display:flex;align-items:center;gap:8px;background:var(--gp-surface-container-high);'
-                ' border:2px solid transparent;border-radius:999px;height:52px;padding:0 6px 0 18px;'
-                ' transition:all 250ms cubic-bezier(.2,0,0,1);max-width:860px;}'
-                '.st-key-searchpill_free [data-testid="stHorizontalBlock"]:focus-within{'
-                ' background:var(--gp-surface);border-color:var(--gp-primary);box-shadow:var(--gp-elev1);}'
-                '.st-key-searchpill_free [data-testid="stVerticalBlock"]{padding:0;margin:0;}'
-                '.st-key-searchpill_free input{background:transparent!important;border:none!important;'
-                ' box-shadow:none!important;font-size:16px!important;color:var(--gp-on-surface)!important;'
-                ' height:44px!important;padding:0!important;}'
-                '.st-key-searchpill_free [data-testid="stButton"] > button{'
-                ' background:var(--gp-primary)!important;color:#fff!important;border-radius:999px!important;'
-                ' height:40px!important;min-height:40px!important;font-weight:500!important;border:none!important;}'
-                '</style>', unsafe_allow_html=True)
+                '@media (min-width: 900px){ .st-key-searchbackrow{display:none!important;} }</style>',
+                unsafe_allow_html=True)
+    if mode == "search":
+        st.markdown('<script>(function(){if(document.activeElement!==document.body)return;'
+                    'var i=document.querySelector(\'input[placeholder="Search your photos"]\');'
+                    'if(i){try{i.focus({preventScroll:true})}catch(e){i.focus()}}})();</script>',
+                    unsafe_allow_html=True)
 
 SETTING_PRETTY = {
     "other": "", "nature_landscape": "Nature", "party_or_event": "Party or event",
@@ -1203,13 +1194,21 @@ def _log_moments(state, tk="free"):
         log_event("jog", tk, "moments_shown",
                   {"n": sum(m["size"] for m in state.get("moments", [])), "img_ids": mids[:300]})
 
+def _ask_example_fill(e):
+    st.session_state["ask_text_free"] = e
+    st.session_state["guided_prefill"] = e
+    st.session_state["ask_autostart"] = True
+    st.rerun()
+
 def _ask_idle():
+    if "ask_text_free" not in st.session_state:
+        st.session_state["ask_text_free"] = ""
     text = st.session_state.get("ask_text_free", "") or ""
     with st.container(key="gpassk"):
         st.markdown(f'<div class="gphaskead">{sparkle(26, "spka")}<span class="t">{C.ASK_TITLE}</span></div>',
                     unsafe_allow_html=True)
         st.markdown(f'<div class="gpassub">{esc(C.ASK_SUBTITLE)}</div>', unsafe_allow_html=True)
-        st.text_area("Describe the photo", key="ask_text_free", value=text, height=96,
+        st.text_area("Describe the photo", key="ask_text_free", height=96,
                      placeholder=C.ASK_PLACEHOLDER, label_visibility="collapsed")
         with st.container(key="wr_12"):
             row = st.columns([1.4, 3, 0.5], vertical_alignment="center", gap="small")
@@ -1229,9 +1228,8 @@ def _ask_idle():
         cols = st.columns(3, gap="small")
         for c, e in zip(cols, ex):
             with c:
-                if st.button(e, key=f"askex_{e[:8]}", type="tertiary"):
-                    st.session_state["ask_text_free"] = e
-                    _start_ask(e)
+                st.button(e, key=f"askex_{e[:8]}", type="tertiary",
+                          on_click=_ask_example_fill, args=(e,))
         st.markdown('</div>', unsafe_allow_html=True)
         provider = live_llm.mode_label()
         line = C.PRIVACY_AI.format(provider=provider) if live_llm.live_status()["available"] else C.PRIVACY_OFFLINE
@@ -1292,42 +1290,43 @@ def _ask_chips(tk, session):
                 b1, b2, b3, b4, b5 = st.columns([1.2, 1, 1, 0.9, 0.5],
                                                  vertical_alignment="center", gap="small")
             _wrow(f"wr_chip_{tk}", [1.2, 1, 1, 0.9, 0.5])
-            def _edit(action):
-                recs = []
-                for j, cc in enumerate(session.cues):
-                    neg, rem, cert = cc.negated, False, cc.certainty
-                    if j == menu_i:
-                        if action == "right":
-                            neg, cert = False, "sure"
-                        elif action == "unsure":
-                            cert = "unsure"
-                        elif action == "notthis":
-                            neg = not cc.negated
-                        elif action == "remove":
-                            rem = True
-                    recs.append({"type": cc.type, "value": cc.value, "certainty": cert,
-                                 "negated": neg, "remove": rem})
-                st.session_state[f"ask_undo_{tk}"] = [
-                    {"type": cc.type, "value": cc.value, "certainty": cc.certainty,
-                     "negated": cc.negated, "remove": False} for cc in session.cues]
-                log_event("jog", tk, "cue_edited",
-                          {"count": len([r for r in recs if not r["remove"]])})
-                st.session_state[f"jog_state_{tk}"] = session.edit_cues(recs)
-                st.session_state.pop(f"chip_menu_{tk}", None)
-                _bump_steps(tk)
-                st.rerun()
+            def _make_edit(action):
+                def _cb():
+                    recs = []
+                    for j, cc in enumerate(session.cues):
+                        neg, rem, cert = cc.negated, False, cc.certainty
+                        if j == menu_i:
+                            if action == "right":
+                                neg, cert = False, "sure"
+                            elif action == "unsure":
+                                cert = "unsure"
+                            elif action == "notthis":
+                                neg = not cc.negated
+                            elif action == "remove":
+                                rem = True
+                        recs.append({"type": cc.type, "value": cc.value,
+                                     "certainty": cert, "negated": neg, "remove": rem})
+                    st.session_state[f"ask_undo_{tk}"] = [
+                        {"type": cc.type, "value": cc.value, "certainty": cc.certainty,
+                         "negated": cc.negated, "remove": False} for cc in session.cues]
+                    log_event("jog", tk, "cue_edited",
+                              {"count": len([r for r in recs if not r["remove"]])})
+                    st.session_state[f"jog_state_{tk}"] = session.edit_cues(recs)
+                    st.session_state.pop(f"chip_menu_{tk}", None)
+                    _bump_steps(tk)
+                return _cb
             with b1:
-                if st.button(C.CHIP_MENU[0], key=f"cm0_{tk}", type="tertiary"):
-                    _edit("right")
+                st.button(C.CHIP_MENU[0], key=f"cm0_{tk}", type="tertiary",
+                          on_click=_make_edit("right"))
             with b2:
-                if st.button(C.CHIP_MENU[1], key=f"cm1_{tk}", type="tertiary"):
-                    _edit("unsure")
+                st.button(C.CHIP_MENU[1], key=f"cm1_{tk}", type="tertiary",
+                          on_click=_make_edit("unsure"))
             with b3:
-                if st.button(C.CHIP_MENU[2], key=f"cm2_{tk}", type="tertiary"):
-                    _edit("notthis")
+                st.button(C.CHIP_MENU[2], key=f"cm2_{tk}", type="tertiary",
+                          on_click=_make_edit("notthis"))
             with b4:
-                if st.button(C.CHIP_MENU[3], key=f"cm3_{tk}", type="tertiary"):
-                    _edit("remove")
+                st.button(C.CHIP_MENU[3], key=f"cm3_{tk}", type="tertiary",
+                          on_click=_make_edit("remove"))
             with b5:
                 if iconbtn(f"cmx_{tk}", "close", "Close", s=18):
                     st.session_state.pop(f"chip_menu_{tk}", None)
@@ -1577,27 +1576,12 @@ def _ask_bottombar(tk, state):
 
 def _ask_active(tk, session, state, is_test=False):
     with st.container(key=f"gpaskact_{tk}"):
-        with st.container(key="wr_17"):
-            row = st.columns([0.4, 6, 0.4], vertical_alignment="center", gap="small")
-        _wrow("wr_17", [0.4, 6, 0.4])
-        with row[0]:
+        with st.container(key=f"gpaskhdr_{tk}"):
             if is_test:
                 st.markdown('<div class="gp-spacer"></div>', unsafe_allow_html=True)
             elif iconbtn(f"askback_{tk}", "back", "Back", s=22):
                 _reset_ask(tk)
                 st.rerun()
-        with row[1]:
-            with st.container(key=f"asksent_{tk}"):
-                with st.container(key="wr_18"):
-                    s1, s2 = st.columns([6, 0.55], vertical_alignment="center", gap="small")
-                _wrow("wr_18", [6, 0.55])
-                with s1:
-                    st.text_input("Your description", key=f"asksent_i_{tk}",
-                                  value=st.session_state.get(f"jog_text_{tk}", ""),
-                                  label_visibility="collapsed")
-                with s2:
-                    if iconbtn(f"askeedit_{tk}", "edit", "Update search", s=18):
-                        _start_ask(st.session_state.get(f"asksent_i_{tk}", ""), tk)
         n = sum(m["size"] for m in state.get("moments", []))
         rng = _ask_range(state)
         st.markdown('<div class="gpstatus">%s</div>' % esc(
@@ -2247,4 +2231,3 @@ except Exception as e:  # noqa: BLE001
     except Exception:  # noqa: BLE001
         pass
     st.error(C.ERROR_FATAL)
-

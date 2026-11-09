@@ -11,3 +11,20 @@ space_jog/logs_ui_error.txt
 figures/*.webm
 space_jog/data/faces/
 *.bak*
+# secrets
+.env
+# model / weight caches (reproducible downloads, stay on disk)
+library/models_insightface/models/
+vercel_deploy/api/.hf_cache/
+vercel_deploy/api/images/
+vercel_deploy_mine/api/images/
+vercel_deploy_tools/hf_cache_parts_done/
+vercel_deploy_tools/hf_cache_stash/
+vercel_deploy_tools/o0
+vercel_deploy_tools/o1
+vercel_deploy_tools/p2
+vercel_deploy_tools/p3
+vercel_deploy_tools/p4b
+vercel_deploy_tools/p5
+vercel_deploy_tools/p4
+vercel_deploy_tools/p6

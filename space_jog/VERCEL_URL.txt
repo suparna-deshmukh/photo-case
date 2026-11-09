@@ -1,0 +1,4 @@
+LIVE (verified): https://space-jog.vercel.app
+- Full 3,252-photo library (photo count capped by Vercel's 2.5 GB function-size limit — noted in the UI)
+- AI mode (Gemini) enabled; Basic-mode rule-based fallback if keys ever fail
+Backup (same app + full library, tunnel from dev machine): https://f03257dd441ace.lhr.life

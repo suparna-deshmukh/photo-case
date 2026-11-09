@@ -1,0 +1,19 @@
+{
+  "redirects": [
+    {
+      "source": "/_stcore/(.*)",
+      "destination": "https://f03257dd441ace.lhr.life/_stcore/$1",
+      "statusCode": 302
+    },
+    {
+      "source": "/static/(.*)",
+      "destination": "https://f03257dd441ace.lhr.life/static/$1",
+      "statusCode": 302
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://f03257dd441ace.lhr.life/",
+      "statusCode": 302
+    }
+  ]
+}

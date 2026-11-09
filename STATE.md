@@ -247,3 +247,23 @@ DONE:
 RUNNING: session 83834 fetch_celebs_final (logs/celeb_final4.log); session 52427 finish_chain (logs/finish_chain.log).
 NEXT (after chain): fill final numbers into deck/notes_for_deck.md (celebrity per-person counts, final library size, persons/clusters), final visual QA of People row + onboarding + person filter (qa_people_*.png), links.md notes, final message.
 STILL USER-GATED (unchanged): dynamic HF Space deploys (402 billing card) / Cloud Run (gcloud auth); 90s recording; deck (module K) — notes accumulated in deck/notes_for_deck.md.
+
+# STATE BLOCK — 2026-10-07 ~16:15 IST (D12 — Discover more tab, user request)
+Mission (user): "Integrate the Gemini API and add a provision to discover more feedback from Play Store, App Store, Reddit, and analyze it. Keep everything as-is; just another tab where the user can search. Keep the URL the same."
+DONE:
+- NEW space_discovery/live_feedback.py: fetch_play (google_play_scraper, newest-250 scan + query-term filter), fetch_appstore (iTunes customerreviews RSS, Google Photos id 962194608), fetch_reddit (www.reddit.com search.rss + "google photos" context, boilerplate stripped, 429 backoff x1). All return (rows, error) - never raise.
+- app.py: 5th tab "🌐 Discover more" (existing 4 untouched): query input, 3 source checkboxes, per-source cap slider, live search button; results = metric row (total / per-source / avg rating), Gemini analysis (summary, sentiment counts, verdict, themes with VERBATIM sample_quote guard, opportunities) or code-only reading fallback; per-source expanders with quote, rating stars, date, source link; friendly per-source errors.
+- space_discovery/requirements.txt: +google_play_scraper==1.2.7; README card line added.
+- VERIFIED: fetchers live (9s for 3 sources); test_discovery_app 6/6 PASS twice; browser smoke desktop+mobile 0 page errors; AI path (mocked live_json) quote-guard PASS; zero-LLM fallback works (R15).
+- CAVEAT: Gemini free-tier key currently 429 on chat — DAILY quota (limit 20 req) exhausted, resets ~05:30 IST 2026-10-08. App degrades gracefully ("Gemini was unavailable just now (quota...) — code-only reading"). AI-mode tab will go live automatically once quota resets; no code change needed.
+- 8501 server: restarted same command/env as persistent session 50192 (URL unchanged: http://localhost:8501). Jog :8502 untouched.
+
+# STATE BLOCK — 2026-10-07 ~16:55 IST (D12-PROD — Discovery Engine live in production, same URL)
+Mission (user): "deploy it to the link - https://pm-ai-18-photo-retrieval-discovery.static.hf.space/index.html"
+DONE:
+- New Vercel project pm28/discovery-feedback-api (PRODUCTION: https://discovery-feedback-api.vercel.app): tiny Python ASGI function (api/feedback.py + live_feedback.py + live_llm.py; deps requests + google_play_scraper only, no torch). POST /feedback {query, sources, per_source} -> {n, by_source, avg_rating, rows, ai, basic_markdown, ...}; GET / health. CORS open, 10 req/min/IP, no stack traces. Secrets LIVE_LLM_* added as Vercel production env from .env (never printed).
+- Static site (SAME URL https://pm-ai-18-photo-retrieval-discovery.static.hf.space/): 5th tab "Discover more" added to index.html + app.js (discoverSearch/drawDiscover, FEEDBACK_API const) + style.css (.disc-* classes). Existing 4 tabs untouched; footer "how this works" copy corrected (tab calls the search service; rest offline).
+- CAVEAT: root / is a 302 -> /index.html; per-file uploads propagate in ~15-30s (app.js/style.css/index.html all verified live).
+- VERIFIED: static smoke 25/25 PASS (pre-upload); production API curl (health 200, search n=11, all 3 sources); production browser E2E desktop + mobile: all 5 tabs, live search 22 docs (play 1 / appstore 10 / reddit 10, avg 3.8), code-only reading rendered, 0 JS errors. Bug caught + fixed in prod E2E: reddit checkbox id mismatch (disc-red vs disc-reddit).
+- CAVEAT: Gemini free-tier key at 429 (daily quota limit 20, resets ~05:30 IST 2026-10-08) -> tab shows code-only reading with honest caption; AI analysis auto-activates when quota returns (health shows ai_available).
+- 8501 Streamlit Discovery + 8502 Jog still running locally (session 50192 = Discovery).

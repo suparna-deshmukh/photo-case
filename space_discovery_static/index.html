@@ -38,6 +38,7 @@
   <button class="tab" data-tab="explore">Explore</button>
   <button class="tab" data-tab="tryit">Try it</button>
   <button class="tab" data-tab="score">Opportunity scorecard</button>
+  <button class="tab" data-tab="discover">Discover more</button>
 </div>
 
 <main>
@@ -161,6 +162,28 @@
       </ul>
     </div>
   </section>
+
+  <!-- ============ DISCOVER MORE (v2 2026-10-07) ============ -->
+  <section id="tab-discover" class="tabpanel">
+    <div class="card">
+      <h2>Discover more: fresh public feedback</h2>
+      <p class="sub">Search <b>live</b> feedback about the app from the Google Play Store, the App Store, and Reddit — then get a Gemini analysis when AI is available, or a code-only reading when it isn't.</p>
+      <div class="ask-row">
+        <input class="input" id="disc-q" placeholder="e.g. 'find a photo of', 'search by face', 'albums missing', 'share'" maxlength="200">
+        <button class="btn btn-primary" id="disc-btn" onclick="discoverSearch()">Search live feedback</button>
+      </div>
+      <div class="disc-srcs">
+        <label class="toggle-row"><input type="checkbox" id="disc-play" checked> Google Play Store</label>
+        <label class="toggle-row"><input type="checkbox" id="disc-app" checked> App Store</label>
+        <label class="toggle-row"><input type="checkbox" id="disc-red" checked> Reddit</label>
+        <span class="disc-nwrap">Max per source
+          <select class="input" id="disc-n"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>30</option></select>
+        </span>
+      </div>
+      <p class="small" style="margin-top:12px">Documents are fetched live from public sources for your query, then analyzed by Gemini when available. Do not type personal information — your query is sent only to this site's search service.</p>
+    </div>
+    <div id="disc-out"></div>
+  </section>
 </main>
 
 <footer class="how">
@@ -169,8 +192,8 @@
       <h4>How this works</h4>
       <p class="small" id="pipeline-line" style="margin:0 0 10px;font-size:13px;color:var(--ink2)"></p>
       <ul class="mut" style="font-size:13px">
-        <li>Offline extraction used an open model run on a personal computer; nothing on this page calls an API.</li>
-        <li>Live AI mode is optional in the full app; this static build is fully offline.</li>
+        <li>Offline extraction used an open model run on a personal computer; the four bundled evidence tabs call no APIs.</li>
+        <li>“Discover more” fetches fresh public feedback — and optional Gemini analysis — via the site’s small search service; everything else stays fully offline in your browser.</li>
         <li>Integrity rule: every number here is computed by code from the same files the deck uses.</li>
       </ul>
     </div>

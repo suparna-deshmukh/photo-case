@@ -250,3 +250,17 @@ input[type=range]{width:100%;accent-color:var(--indigo);height:22px;cursor:point
   .sval{text-align:left}
   .snipcell{max-width:260px}
 }
+
+/* ---------- discover more (live) ---------- */
+.disc-srcs{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;margin-top:10px}
+.disc-srcs .toggle-row{margin:0}
+.disc-nwrap{font-size:13px;color:var(--ink2);display:inline-flex;gap:7px;align-items:center}
+.disc-nwrap .input{width:auto;padding:4px 10px;font-size:13px}
+.disc-stats{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.disc-stat{border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-size:13px;display:flex;gap:8px;align-items:baseline;background:#fff;color:var(--ink2)}
+.disc-stat b{font-size:15px;color:var(--ink)}
+.disc-theme{padding:9px 0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.disc-theme .ev-quote{border-top:0;padding-top:0;width:100%;margin-top:2px}
+.disc-doc{padding:10px 0;border-top:1px solid var(--line)}
+.disc-doc:first-of-type{border-top:0}
+.stars{color:#E69F00;letter-spacing:1px}

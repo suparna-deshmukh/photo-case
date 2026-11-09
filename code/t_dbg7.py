@@ -1,0 +1,20 @@
+from playwright.sync_api import sync_playwright
+with sync_playwright() as pw:
+    b = pw.chromium.launch()
+    ctx = b.new_context(viewport={"width": 1440, "height": 900})
+    page = ctx.new_page()
+    errs, cons = [], []
+    page.on("pageerror", lambda e: errs.append(str(e)[:300]))
+    page.on("console", lambda m: cons.append(m.text[:300]) if m.type in ("error", "warning") else None)
+    page.goto("http://localhost:8502", wait_until="domcontentloaded")
+    page.wait_for_timeout(16000)
+    print("HOME console:", cons[:6], "| pageerr:", errs[:3])
+    page.locator(".st-key-pill_ask_chip button").click(timeout=15000)
+    page.wait_for_timeout(2500)
+    cons.clear(); errs.clear()
+    page.locator("textarea").first.type("cafe", delay=50)
+    page.wait_for_timeout(3000)
+    print("ASK console:", cons[:6], "| pageerr:", errs[:3])
+    r = page.evaluate("() => { const d = document.querySelector('#dbgasklen'); return d ? d.textContent : 'NOELEM'; }")
+    print("dbg:", r)
+    b.close()

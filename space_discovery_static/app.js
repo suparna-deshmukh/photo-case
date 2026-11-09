@@ -426,6 +426,107 @@ function drawScore() {
     </tr>`).join("")}</tbody></table>`;
 }
 
+
+/* ---------- discover more (live) ---------- */
+const FEEDBACK_API = "https://discovery-feedback-api.vercel.app";
+const DISC_SRC = { play: "Google Play Store", appstore: "App Store", reddit: "Reddit" };
+const DISC_ERR = { offline: "no network in this environment", not_installed: "source not available in this build",
+  fetch_failed: "couldn\u2019t be reached right now", rate_limited: "rate-limited right now", parse_failed: "unreadable response" };
+let discBusy = false;
+function stars5(r) { return r ? "\u2605".repeat(r) + "\u2606".repeat(5 - r) : ""; }
+async function discoverSearch() {
+  if (discBusy) return;
+  const out = $("disc-out");
+  const q = ($("disc-q").value || "").trim();
+  if (!q) { out.innerHTML = '<div class="card"><p class="note">Type a search query first.</p></div>'; return; }
+  const discId = { play: "disc-play", appstore: "disc-app", reddit: "disc-red" };
+  const sources = ["play", "appstore", "reddit"].filter(x => $(discId[x]).checked);
+  if (!sources.length) { out.innerHTML = '<div class="card"><p class="note">Pick at least one source.</p></div>'; return; }
+  discBusy = true;
+  const btn = $("disc-btn");
+  btn.disabled = true; btn.textContent = "Fetching live feedback\u2026";
+  out.innerHTML = '<div class="card"><p class="sub">Fetching fresh public feedback for \u201c' + esc(q) + '\u201d from ' +
+    esc(sources.map(x => DISC_SRC[x]).join(" + ")) + " \u2014 usually 10\u201330 s.</p></div>";
+  try {
+    const r = await fetch(FEEDBACK_API + "/feedback", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ query: q, sources, per_source: +$("disc-n").value })
+    });
+    const d = await r.json().catch(() => null);
+    if (!r.ok || !d || d.error) throw new Error((d && d.error) || ("HTTP " + r.status));
+    drawDiscover(d);
+  } catch (e) {
+    out.innerHTML = '<div class="card"><h2>Couldn\u2019t fetch live feedback</h2><p class="note">' +
+      esc(String((e && e.message) || e)) + " \u2014 please try again in a minute.</p></div>";
+  } finally {
+    discBusy = false;
+    btn.disabled = false; btn.textContent = "Search live feedback";
+  }
+}
+function drawDiscover(d) {
+  const rows = d.rows || [];
+  const bySrc = d.by_source || {};
+  const stat = (l, v) => `<div class="disc-stat"><span>${esc(l)}</span><b>${esc(v)}</b></div>`;
+  let stats = stat("Documents found", fmt(d.n));
+  (d.sources || []).forEach(x => { stats += stat(DISC_SRC[x] || x, fmt(bySrc[x] || 0)); });
+  if (d.avg_rating != null) stats += stat("Avg rating", (+d.avg_rating).toFixed(1) + " / 5");
+  let html = '<div class="card"><div class="ans-head"><h2 class="ans-title">' + fmt(d.n) + ' fresh document(s) for \u201c' +
+    esc(d.query) + '\u201d</h2><span class="meta-pill">fetched live</span></div><div class="disc-stats">' + stats + '</div></div>';
+  if (!rows.length) {
+    const errs = (d.sources || []).filter(x => (d.errors || {})[x]);
+    html += '<div class="card"><h2>No matching documents right now</h2><p class="note">Try a broader query or different sources.' +
+      (errs.length ? " " + errs.map(x => DISC_SRC[x] + ": " + esc(DISC_ERR[(d.errors || {})[x]] || "error")).join(" \u00b7 ") : "") + "</p></div>";
+    $("disc-out").innerHTML = html;
+    return;
+  }
+  const ai = d.ai;
+  if (ai) {
+    let sc = "";
+    if (ai.sentiment) {
+      const s = ai.sentiment;
+      sc = '<div class="disc-stats">' + stat("Positive", s.positive != null ? s.positive : 0) + stat("Negative", s.negative != null ? s.negative : 0) + stat("Neutral", s.neutral != null ? s.neutral : 0) + '</div>';
+    }
+    let themes = "";
+    (ai.themes || []).forEach(t => {
+      themes += '<div class="disc-theme"><span><b>' + esc(t.theme) + '</b>' +
+        (t.tone ? ' <span class="badge dim">' + esc(t.tone) + '</span>' : "") +
+        (t.count ? ' <span class="small">' + t.count + " docs</span>" : "") + '</span>' +
+        (t.sample_quote ? '<div class="ev-quote">\u201c' + esc(t.sample_quote) + '\u201d</div>' : "") + '</div>';
+    });
+    const opps = (ai.opportunities || []).filter(o => typeof o === "string" && o.trim());
+    html += '<div class="card"><div class="ans-head"><h2 class="ans-title">Gemini analysis</h2><span class="meta-pill">live \u00b7 ' + esc(d.model || "gemini") + '</span></div>' +
+      '<div class="md">' + mdLite(ai.summary_markdown || "") + "</div>" + sc +
+      (ai.verdict ? "<p><b>Verdict:</b> " + esc(ai.verdict) + "</p>" : "") +
+      (themes ? "<h3>Themes</h3>" + themes : "") +
+      (opps.length ? "<h3>Opportunities implied</h3><ul class=\'mut\'>" + opps.map(o => "<li>" + esc(o) + "</li>").join("") + "</ul>" : "") +
+      '<details class="tables"><summary>Code-only reading (always available)</summary><div class="md">' + mdLite(d.basic_markdown || "") + "</div></details></div>";
+  } else {
+    const why = d.ai_available ? "Gemini unavailable just now (quota, cap, timeout, or breaker)" : "no live AI right now";
+    html += '<div class="card"><div class="ans-head"><h2 class="ans-title">Code-only reading</h2><span class="meta-pill">' + esc(why) + '</span></div>' +
+      '<div class="md">' + mdLite(d.basic_markdown || "") + "</div></div>";
+  }
+  (d.sources || []).forEach(x => {
+    const srows = rows.filter(r => r.source === x);
+    const err = (d.errors || {})[x];
+    html += '<div class="card"><h2>' + esc(DISC_SRC[x] || x) + " \u2014 " + fmt(srows.length) + " document(s)</h2>";
+    if (!srows.length && err) {
+      html += '<p class="note">Couldn\u2019t fetch from ' + esc(DISC_SRC[x] || x) + " right now (" + esc(DISC_ERR[err] || err) + ").</p>";
+    }
+    srows.forEach(r => {
+      html += '<div class="disc-doc"><div class="ev-snip">' + esc(r.text) + '</div><div class="ev-top">' +
+        (r.rating ? '<span class="stars">' + stars5(r.rating) + "</span>" : "") +
+        (r.date ? '<span>' + esc(r.date) + "</span>" : "") +
+        (r.url ? '<a class="ext" href="' + esc(r.url) + '" target="_blank" rel="noopener">source</a>' : "") +
+        "</div></div>";
+    });
+    html += "</div>";
+  });
+  html += '<p class="small" style="margin-top:10px">Quotes are verbatim public documents fetched live for your query \u2014 a fresh, small convenience sample, separate from the bundled study dataset.</p>';
+  $("disc-out").innerHTML = html;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 load().catch(e => {
   $("lede").innerHTML = "Failed to load data.json: " + esc(e.message || e);
   $("answer").innerHTML = "<p class='mut'>The bundled dataset could not be loaded — see console.</p>";

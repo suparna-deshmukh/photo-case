@@ -20,6 +20,7 @@ import streamlit as st
 
 import evidence_engine as ee
 import live_llm
+import live_feedback as lf
 from schemas import Episode
 
 st.set_page_config(page_title="Photo Retrieval Discovery Engine", page_icon="🔎", layout="wide")
@@ -183,7 +184,8 @@ if f_gate:
     FILT["failure_gate"] = f_gate
 FDF = ee._apply_filters(DF, FILT, ENUMS)
 
-tabs = st.tabs(["🔎 Ask the evidence", "📊 Explore", "🧪 Try it", "🎯 Opportunity scorecard"])
+tabs = st.tabs(["🔎 Ask the evidence", "📊 Explore", "🧪 Try it", "🎯 Opportunity scorecard",
+                "🌐 Discover more"])
 
 # ================= TAB 1: Ask the evidence =================
 with tabs[0]:
@@ -500,6 +502,123 @@ with tabs[3]:
             "**Limits of this evidence:** app-store reviews skew to complaints; Reddit skews to power users; "
             "failure gates are model-inferred (see sidebar validation numbers); the scorecard shows failure "
             "**types**, not prevalence in the user population; era boundaries are a working assumption.")
+
+# ================= TAB 5: Discover more =================
+with tabs[4]:
+    st.markdown("### Discover more: fresh public feedback")
+    st.caption("Search **live** feedback about the app from the Google Play Store, the App Store, and "
+               "Reddit — then get a Gemini analysis (AI mode) or a code-only reading (basic mode). "
+               "Fetched on demand from public sources; do not type personal information.")
+    dq = st.text_input("Search query", key="disc_query", max_chars=200,
+                       placeholder="e.g. 'find a photo of', 'search by face', 'albums missing', 'share'")
+    dc1, dc2, dc3 = st.columns(3)
+    do_play = dc1.checkbox("Google Play Store", value=True, key="disc_play")
+    do_app = dc2.checkbox("App Store", value=True, key="disc_app")
+    do_red = dc3.checkbox("Reddit", value=True, key="disc_red")
+    disc_n = st.slider("Max items per source", 5, 30, 15, step=5, key="disc_n")
+    if st.button("Search live feedback", type="primary", key="disc_go"):
+        qy = dq.strip()
+        if not qy:
+            st.info("Type a search query first.")
+        else:
+            sources = [s for s, on in (("play", do_play), ("appstore", do_app), ("reddit", do_red)) if on]
+            if not sources:
+                st.info("Pick at least one source.")
+            else:
+                with st.spinner("Fetching fresh public feedback from "
+                                + " + ".join(lf.SOURCE_LABEL[s] for s in sources) + "…"):
+                    res = lf.run_search(qy, sources, disc_n)
+                res["ai"] = None
+                res["ai_mode"] = False
+                if res["rows"] and status["available"]:
+                    res["ai_mode"] = True
+                    if "live_session" not in st.session_state:
+                        st.session_state.live_session = {"live_calls": 0}
+                    with st.spinner("Analyzing with Gemini…"):
+                        res["ai"] = lf.ai_analysis(qy, res["rows"], session=st.session_state.live_session)
+                st.session_state["disc_result"] = res
+    res = st.session_state.get("disc_result")
+    if res:
+        rows = res["rows"]
+        n_by = {}
+        rated = []
+        for r in rows:
+            n_by[r["source"]] = n_by.get(r["source"], 0) + 1
+            if r.get("rating"):
+                rated.append(r["rating"])
+        cells = [("Documents found", len(rows))]
+        for s in res["sources"]:
+            cells.append((lf.SOURCE_LABEL[s], n_by.get(s, 0)))
+        if rated:
+            cells.append(("Avg rating", f"{sum(rated) / len(rated):.1f} / 5"))
+        mc = st.columns(min(len(cells), 4))
+        for i, (label, val) in enumerate(cells[:4]):
+            mc[i].metric(label, val)
+        if len(cells) > 4:
+            mc2 = st.columns(len(cells) - 4)
+            for i, (label, val) in enumerate(cells[4:]):
+                mc2[i].metric(label, val)
+        if not rows:
+            st.warning("No matching documents right now — try a broader query or different sources.")
+            for s in res["sources"]:
+                if res["errors"].get(s):
+                    st.caption(f"{lf.SOURCE_LABEL[s]}: {lf.FRIENDLY_ERROR.get(res['errors'][s], 'error')}")
+        else:
+            ai = res.get("ai")
+            if ai:
+                st.markdown("**Gemini analysis** (live)")
+                st.markdown(ai.get("summary_markdown") or "")
+                sc = ai.get("sentiment") or {}
+                if sc:
+                    s1, s2, s3 = st.columns(3)
+                    s1.metric("Positive", int(sc.get("positive") or 0))
+                    s2.metric("Negative", int(sc.get("negative") or 0))
+                    s3.metric("Neutral", int(sc.get("neutral") or 0))
+                if ai.get("verdict"):
+                    st.markdown(f"**Verdict:** {ai['verdict']}")
+                themes = [t for t in (ai.get("themes") or []) if isinstance(t, dict) and t.get("theme")]
+                if themes:
+                    st.markdown("**Themes**")
+                    for t in themes:
+                        line = f"- **{t['theme']}**"
+                        if t.get("tone"):
+                            line += f" _({t['tone']})_"
+                        if t.get("count"):
+                            line += f" — {t['count']} docs"
+                        st.markdown(line)
+                        if t.get("sample_quote"):
+                            st.markdown(f"  > “{t['sample_quote']}”")
+                opps = [o for o in (ai.get("opportunities") or []) if isinstance(o, str) and o.strip()]
+                if opps:
+                    st.markdown("**Opportunities implied**")
+                    st.markdown("\n".join(f"- {o}" for o in opps))
+                with st.expander("Code-only reading (always available)"):
+                    st.markdown(lf.basic_analysis(res["query"], rows))
+            else:
+                if res.get("ai_mode"):
+                    st.caption("Gemini was unavailable just now (quota, cap, timeout, or breaker) — "
+                               "showing the code-only reading.")
+                st.markdown(lf.basic_analysis(res["query"], rows))
+            for s in res["sources"]:
+                srows = [r for r in rows if r["source"] == s]
+                label = lf.SOURCE_LABEL[s]
+                with st.expander(f"{label} — {len(srows)} document(s)",
+                                 expanded=(len(res["sources"]) == 1)):
+                    if not srows and res["errors"].get(s):
+                        st.caption(f"Couldn't fetch from {label} right now "
+                                   f"({lf.FRIENDLY_ERROR.get(res['errors'][s], 'error')}).")
+                    for r in srows:
+                        stars = ""
+                        if isinstance(r.get("rating"), int):
+                            stars = "★" * r["rating"] + "☆" * (5 - r["rating"])
+                        st.markdown(f"> {r['text'][:280]}{'…' if len(r['text']) > 280 else ''}")
+                        meta = " · ".join(x for x in [stars, r.get("date", "")] if x)
+                        if r.get("url"):
+                            meta += f" · [source]({r['url']})"
+                        st.caption(meta or "—")
+    else:
+        st.caption("Nothing fetched yet — type a query and press Search. Each search re-fetches "
+                   "the newest public documents for that query.")
 
 # keep a top-level guard so no raw traceback reaches the user
 def _guard():

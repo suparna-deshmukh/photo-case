@@ -1,0 +1,1052 @@
+{
+  "i'm trying to find a photo of a small café on our goa trip. i think it was daytime and we were having coffee before the beach. i don't remember which day or which café.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Goa",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "small café",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "daytime",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "having coffee",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": null,
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "Small café interior or exterior, people drinking coffee, daytime lighting, casual travel setting",
+      "anchor": {
+        "description": null,
+        "relation": null
+      }
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Goa",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "daytime",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "cafe",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "coffee",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": null,
+      "visual_query": "trying café daytime coffee beach café",
+      "anchor": null
+    }
+  },
+  "there's a photo from the trip where we stopped at a café by the river. it was during the day, i'm sure. i don't remember which day of the trip it was.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "café by the river",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "day",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "café",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "stopped at a café",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": null,
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "Café exterior or interior near a river, daytime lighting, people sitting or standing.",
+      "anchor": null
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "time_of_day",
+          "value": "daytime",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "cafe",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": null,
+      "visual_query": "café river",
+      "anchor": null
+    }
+  },
+  "when i was ill i photographed my medicine so i'd remember the dosage. i think it was around the end of 2023, maybe november. i don't remember where i took it.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "object",
+          "value": "medicine",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "photographing medicine",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "purpose",
+          "value": "remember dosage",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "indoor",
+          "certainty": "unsure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2023-11-01",
+        "end": "2023-12-31",
+        "certainty": "unsure"
+      },
+      "visual_query": "Close-up of medicine bottles or pills, likely on a table or counter, neutral lighting.",
+      "anchor": null
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "setting_type",
+          "value": "document_or_utility",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "medicine",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "purpose",
+          "value": "remember the",
+          "certainty": "unsure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2023-11-01",
+        "end": "2023-11-30",
+        "certainty": "unsure"
+      },
+      "visual_query": "ill photographed medicine dosage end",
+      "anchor": null
+    }
+  },
+  "i had photographed my handwritten notes right before exams last year, around april or may. i can't remember the exact day or which page it was.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "object",
+          "value": "handwritten notes",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "photographing notes",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "purpose",
+          "value": "before exams",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_window",
+          "value": "April or May last year",
+          "certainty": "unsure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2025-04-01",
+        "end": "2025-05-31",
+        "certainty": "unsure"
+      },
+      "visual_query": "Close-up of handwritten notes on paper, likely with pen or pencil marks, possibly on a desk or table.",
+      "anchor": {
+        "description": "Exams",
+        "relation": "before"
+      }
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "setting_type",
+          "value": "classroom_or_study",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "notes",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "purpose",
+          "value": "remember the",
+          "certainty": "unsure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2025-04-01",
+        "end": "2025-05-31",
+        "certainty": "unsure"
+      },
+      "visual_query": "photographed handwritten notes exams can exact page",
+      "anchor": null
+    }
+  },
+  "in pondicherry we had dinner on a rooftop at night, the evening after we walked around the old french-style buildings. i want that dinner photo.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Pondicherry",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "rooftop",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "dinner",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "night",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "indoor_outdoor",
+          "value": "outdoor",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "visual_detail",
+          "value": "French-style buildings",
+          "certainty": "unsure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": null,
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "Rooftop dinner scene at night, people eating, dark sky, city lights, French-style architecture in background.",
+      "anchor": {
+        "description": "Walking around old French-style buildings",
+        "relation": "before"
+      }
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Pondicherry",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "evening",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "restaurant",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "rooftop",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": null,
+      "visual_query": "dinner rooftop night evening walked old rench style buildings dinner",
+      "anchor": null
+    }
+  },
+  "a sunset photo with a boat in the foreground. it was either goa or gokarna. i'm sure about the boat.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "object",
+          "value": "boat",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "place",
+          "value": "Goa",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "place",
+          "value": "Gokarna",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "sunset",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "visual_detail",
+          "value": "boat in foreground",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": null,
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "Sunset scene with a boat in the foreground, warm colors, water surface.",
+      "anchor": null
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Goa",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "place",
+          "value": "Gokarna",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "evening",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "sunset",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "boat",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": null,
+      "visual_query": "sunset boat boat",
+      "anchor": null
+    }
+  },
+  "a photo of the old stone ruins at sunset, and i think one of us was standing in front of them. it was the hampi trip.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Hampi",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "old stone ruins",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "sunset",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "person",
+          "value": "one of us",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "standing in front of ruins",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "indoor_outdoor",
+          "value": "outdoor",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": null,
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "Old stone ruins at sunset with a person standing in front, warm lighting, outdoor scene.",
+      "anchor": null
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Hampi",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "evening",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "temple_or_ruins",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "sunset",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": null,
+      "visual_query": "old stone ruins sunset us standing",
+      "anchor": null
+    }
+  },
+  "a festival photo from home last year — sweets and lights. i don't remember which day.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "setting_type",
+          "value": "home",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "sweets",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "lights",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "purpose",
+          "value": "festival",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "certainty": "unsure"
+      },
+      "visual_query": "Sweets and lights arranged for a festival at home",
+      "anchor": null
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "setting_type",
+          "value": "hostel_or_home",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "sweets",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2025-10-06",
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "festival home sweets lights",
+      "anchor": null
+    }
+  },
+  "a photo from a college fest night — stage lights and a crowd. i think it was last year.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "setting_type",
+          "value": "college fest",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "night",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "visual_detail",
+          "value": "stage lights",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "visual_detail",
+          "value": "crowd",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "certainty": "unsure"
+      },
+      "visual_query": "Stage lights illuminating a crowd at a college fest night",
+      "anchor": null
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "time_of_day",
+          "value": "night",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "party_or_event",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2025-10-06",
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "college fest night stage lights crowd",
+      "anchor": null
+    }
+  },
+  "a café somewhere in goa, daytime i think, we had coffee before the beach": {
+    "llm": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Goa",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "café",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "daytime",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "coffee",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "having coffee",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "indoor_outdoor",
+          "value": "indoor",
+          "certainty": "unsure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": null,
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "Coffee cups on a table in a café setting, natural light, casual atmosphere.",
+      "anchor": {
+        "description": null,
+        "relation": null
+      }
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Goa",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "daytime",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "cafe",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "coffee",
+          "certainty": "unsure",
+          "negated": false
+        }
+      ],
+      "time_window": null,
+      "visual_query": "café daytime coffee beach",
+      "anchor": null
+    }
+  },
+  "the sunset with a boat, either the goa trip or the later one": {
+    "llm": {
+      "cues": [
+        {
+          "type": "object",
+          "value": "boat",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "sunset",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "place",
+          "value": "Goa",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "water",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": null,
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "Sunset sky with a boat on the water",
+      "anchor": {
+        "description": null,
+        "relation": null
+      }
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Goa",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "evening",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "sunset",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "boat",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": null,
+      "visual_query": "sunset boat",
+      "anchor": null
+    }
+  },
+  "a photo of my medicine strip i took when i was sick, maybe last november": {
+    "llm": {
+      "cues": [
+        {
+          "type": "object",
+          "value": "medicine strip",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "taking photo of medicine",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "sick",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2025-11-01",
+        "end": "2025-11-30",
+        "certainty": "unsure"
+      },
+      "visual_query": "medicine strip, blister pack, pills, close-up shot",
+      "anchor": null
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "setting_type",
+          "value": "document_or_utility",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "medicine",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2026-09-28",
+        "end": "2026-09-28",
+        "certainty": "unsure"
+      },
+      "visual_query": "medicine strip sick",
+      "anchor": null
+    }
+  },
+  "notes i photographed before exams, around last april": {
+    "llm": {
+      "cues": [
+        {
+          "type": "object",
+          "value": "notes",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "photographing notes",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "purpose",
+          "value": "before exams",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2025-04-01",
+        "end": "2025-04-30",
+        "certainty": "unsure"
+      },
+      "visual_query": "Close-up of handwritten or printed study notes, likely on paper, possibly with a phone or hand visible.",
+      "anchor": {
+        "description": null,
+        "relation": null
+      }
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "setting_type",
+          "value": "classroom_or_study",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "notes",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": "2025-04-01",
+        "end": "2025-04-30",
+        "certainty": "unsure"
+      },
+      "visual_query": "notes photographed exams",
+      "anchor": null
+    }
+  },
+  "the night we dined on a rooftop in pondicherry, after the old-town walk": {
+    "llm": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Pondicherry",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "rooftop",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "dining",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "night",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "indoor_outdoor",
+          "value": "outdoor",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "anchor_event",
+          "value": "old-town walk",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": null,
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "Rooftop dining scene at night, outdoor table, ambient lighting, urban background",
+      "anchor": {
+        "description": "old-town walk",
+        "relation": "after"
+      }
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Pondicherry",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "night",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "rooftop",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": null,
+      "visual_query": "night dined rooftop old town walk",
+      "anchor": null
+    }
+  },
+  "in bengaluru, near the end of my internship, a few days after a stretch of late nights at the office, we went out one evening and i saw the city from up high. i want that evening photo.": {
+    "llm": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Bengaluru",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "evening",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "activity",
+          "value": "viewing city from up high",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "high vantage point",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "indoor_outdoor",
+          "value": "outdoor",
+          "certainty": "unsure",
+          "negated": false
+        },
+        {
+          "type": "visual_detail",
+          "value": "city lights",
+          "certainty": "unsure",
+          "negated": false
+        }
+      ],
+      "time_window": {
+        "start": null,
+        "end": null,
+        "certainty": "unsure"
+      },
+      "visual_query": "City skyline view from a high vantage point at evening, urban lights, Bengaluru",
+      "anchor": {
+        "description": "End of internship, after a stretch of late nights at the office",
+        "relation": "near"
+      }
+    },
+    "rules": {
+      "cues": [
+        {
+          "type": "place",
+          "value": "Bengaluru",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "time_of_day",
+          "value": "evening",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "setting_type",
+          "value": "office",
+          "certainty": "sure",
+          "negated": false
+        },
+        {
+          "type": "object",
+          "value": "city",
+          "certainty": "sure",
+          "negated": false
+        }
+      ],
+      "time_window": null,
+      "visual_query": "near end internship days stretch late nights office went out evening saw city high evening",
+      "anchor": null
+    }
+  }
+}
